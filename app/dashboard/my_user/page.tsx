@@ -10,7 +10,6 @@ import { selectTotalPages } from "@/app/dashboard/my_user/_lib/actions";
 import { Suspense } from "react";
 import { InvoicesTableSkeleton } from "@/app/ui/skeletons";
 
-
 export default async function Page(props: {
   searchParams?: Promise<{
     query?: string;
@@ -19,12 +18,14 @@ export default async function Page(props: {
   }>;
 }) {
   const theParams = await props.searchParams;
-  const { query = "", page = 1, pageSize = 10 } = theParams ?? {};
-  const totalPages = await selectTotalPages(pageSize,query);
+  const { query = "", page = 1, pageSize = 6 } = theParams ?? {};
+  const totalPages = await selectTotalPages(pageSize, query);
   return (
     <div>
       <Breadcrumbs
-        breadcrumbs={[{ label: "My User", href: "/dashboard/my_user" }]}
+        breadcrumbs={[
+          { label: "My User", href: "/dashboard/my_user", active: true },
+        ]}
       />
       <div className="flex gap-4">
         <Search placeholder="Search Name" />
@@ -33,7 +34,8 @@ export default async function Page(props: {
       <Suspense fallback={<InvoicesTableSkeleton />}>
         <Table query={query} currentPage={page} pageSize={pageSize} />
       </Suspense>
-      <Pagination totalPages={totalPages} />
+      <div className="flex justify-end mt-6">
+      <Pagination totalPages={totalPages} /></div>
     </div>
   );
 }
