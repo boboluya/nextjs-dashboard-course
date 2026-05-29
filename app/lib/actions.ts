@@ -5,6 +5,7 @@ import postgres from "postgres";
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: false });
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { error } from "node:console";
 
 const FormSchema = z.object({
   id: z.string(),
@@ -55,12 +56,20 @@ export async function createInvoice(prevState: State,formData: FormData) {
   redirect("/dashboard/invoices");
 }
 
-export async function updateInvoice(id: string, formData: FormData) {
-  const { customerId, amount, status } = UpdateInvoice.parse({
+export async function updateInvoice(id: string, prevState: State, formData: FormData) {
+  const parsedData = UpdateInvoice.safeParse({
     customerId: formData.get('customerId'),
     amount: formData.get('amount'),
     status: formData.get('status'),
   });
+
+  if (!parsedData.success) {
+    return {
+      errors: parsedData.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Update Invoice.',
+    };
+  }
+  const { customerId, amount, status } = parsedData.data;
 
   const amountInCents = amount * 100;
 
