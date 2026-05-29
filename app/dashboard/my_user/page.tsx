@@ -1,38 +1,35 @@
-import { getTenUsers } from "@/app/lib/my_data";
+import { getTenUsers } from "@/app/dashboard/my_user/_lib/my_data";
 import clsx from "clsx";
+import Link from "next/link";
+import Table from "@/app/dashboard/my_user/_component/table";
+import Search from "@/app/ui/search";
+import { CreateMyUser } from "@/app/dashboard/my_user/_component/buttons";
+import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
+import Pagination from "@/app/dashboard/my_user/_component/pagination";
+import { selectTotalPages } from "@/app/dashboard/my_user/_lib/actions";
 
-export default async function Page() {
-  const users = await getTenUsers();
+
+export default async function Page(props: {
+  searchParams?: Promise<{
+    query?: string;
+    page?: number;
+    pageSize?: number;
+  }>;
+}) {
+  const theParams = await props.searchParams;
+  const { query = "", page = 1, pageSize = 10 } = theParams ?? {};
+  const totalPages = await selectTotalPages(pageSize,query);
   return (
     <div>
-      <ul>
-        <li className="flex flex-row items-center justify-between py-4 bg-slate-300">
-          <p>No.</p>
-          <p>Name</p>
-          <p>Nickname</p>
-          <p>Created by</p>
-        </li>
-        {users.map((user, i) => (
-          <li
-            key={user.userId}
-            className={clsx("flex flex-row items-center justify-between py-4", {
-              "border-t": 1 == 1,
-            })}
-          >
-            <span className="text-muted">{i + 1}</span>
-            <p className="flex items-center">{user.userName}</p>
-            <p className="flex items-center">{user.nickName}</p>
-            <div className="min-w-0">
-              <p className="truncate text-sm font-semibold md:text-base">
-                Created by: {user.createBy}
-              </p>
-              <p className="hidden text-sm text-gray-500 sm:block">
-                Updated by: {user.updateBy}
-              </p>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <Breadcrumbs
+        breadcrumbs={[{ label: "My User", href: "/dashboard/my_user" }]}
+      />
+      <div className="flex gap-4">
+        <Search placeholder="Search Name" />
+        <CreateMyUser />
+      </div>
+      <Table query={query} currentPage={page} pageSize={pageSize} />
+      <Pagination totalPages={totalPages} />
     </div>
   );
 }
