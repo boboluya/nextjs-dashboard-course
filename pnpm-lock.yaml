@@ -66,6 +66,9 @@ importers:
       '@types/react-dom':
         specifier: 19.0.3
         version: 19.0.3(@types/react@19.0.7)
+      baseline-browser-mapping:
+        specifier: ^2.10.32
+        version: 2.10.32
 
 packages:
 

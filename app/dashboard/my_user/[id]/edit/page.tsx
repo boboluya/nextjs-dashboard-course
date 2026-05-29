@@ -15,7 +15,7 @@ export default async function Page({
       <Breadcrumbs
         breadcrumbs={[
           { label: "My User", href: "/dashboard/my_user" },
-          { label: "Edit", href: `/dashboard/my_user/${id}/edit` },
+          { label: "Edit", href: `/dashboard/my_user/${id}/edit`, active: true },
         ]}
       />
       <EditForm user={user} />
