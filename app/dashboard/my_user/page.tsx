@@ -7,6 +7,8 @@ import { CreateMyUser } from "@/app/dashboard/my_user/_component/buttons";
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import Pagination from "@/app/dashboard/my_user/_component/pagination";
 import { selectTotalPages } from "@/app/dashboard/my_user/_lib/actions";
+import { Suspense } from "react";
+import { InvoicesTableSkeleton } from "@/app/ui/skeletons";
 
 
 export default async function Page(props: {
@@ -28,7 +30,9 @@ export default async function Page(props: {
         <Search placeholder="Search Name" />
         <CreateMyUser />
       </div>
-      <Table query={query} currentPage={page} pageSize={pageSize} />
+      <Suspense fallback={<InvoicesTableSkeleton />}>
+        <Table query={query} currentPage={page} pageSize={pageSize} />
+      </Suspense>
       <Pagination totalPages={totalPages} />
     </div>
   );
