@@ -2,14 +2,18 @@ import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { desc, eq } from 'drizzle-orm';
 import { usersTable } from './db/schema';
-
+import pg from 'pg';
+import * as schema from './db/schema';
 // You can specify any property from the node-postgres connection options
-const db = drizzle({
-  connection: {
-    connectionString: process.env.DATABASE_URL!,
-    ssl: false
-  }
+const pool = new pg.Pool({
+  connectionString: process.env.DATABASE_URL!,
+  max: 10,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
+  ssl: false,
 });
+
+export const db = drizzle(pool, { schema });
 
 async function main() {
   const user2: typeof usersTable.$inferInsert = {

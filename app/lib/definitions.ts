@@ -86,3 +86,26 @@ export type InvoiceForm = {
   amount: number;
   status: 'pending' | 'paid';
 };
+
+export type SysUser = {
+  userId: number;
+  deptId: number | null;
+  userName: string;
+  nickName: string;
+  email: string | null;
+  phoneNumber: string | null;
+  sex: string | null;
+  avatar: string | null;
+  password: string;
+  status: string | null;
+  deletedFlag: string | null;
+  loginIp: string | null;
+  loginDatetime: Date | null;
+  createDept: number;
+  createBy: number;
+  createTime: Date;
+  updateDept: number;
+  updateBy: number;
+  updateTime: Date;
+  remark: string | null;
+};
