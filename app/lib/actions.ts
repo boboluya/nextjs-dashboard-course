@@ -6,14 +6,20 @@ const sql = postgres(process.env.POSTGRES_URL!, { ssl: false });
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { error } from "node:console";
+import { signIn } from "@/auth";
+import { AuthError } from "next-auth";
 
 const FormSchema = z.object({
   id: z.string(),
   customerId: z.string({
     invalid_type_error: "Please select a customer.",
   }),
-  amount: z.coerce.number().gt(0,{message: 'Please enter an amount greater than $0.' }),
-  status: z.enum(["pending", "paid"],{invalid_type_error: 'Please select an invoice status.'}),
+  amount: z.coerce
+    .number()
+    .gt(0, { message: "Please enter an amount greater than $0." }),
+  status: z.enum(["pending", "paid"], {
+    invalid_type_error: "Please select an invoice status.",
+  }),
   date: z.string(),
 });
 
@@ -27,7 +33,7 @@ export type State = {
   };
   message?: string | null;
 };
-export async function createInvoice(prevState: State,formData: FormData) {
+export async function createInvoice(prevState: State, formData: FormData) {
   const parsedData = CreateInvoice.safeParse({
     customerId: formData.get("customerId"),
     amount: formData.get("amount"),
@@ -36,7 +42,7 @@ export async function createInvoice(prevState: State,formData: FormData) {
   if (!parsedData.success) {
     return {
       errors: parsedData.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Create Invoice.',
+      message: "Missing Fields. Failed to Create Invoice.",
     };
   }
   // const parsedData = CreateInvoice.safeParse(extractedFormData);
@@ -56,17 +62,21 @@ export async function createInvoice(prevState: State,formData: FormData) {
   redirect("/dashboard/invoices");
 }
 
-export async function updateInvoice(id: string, prevState: State, formData: FormData) {
+export async function updateInvoice(
+  id: string,
+  prevState: State,
+  formData: FormData,
+) {
   const parsedData = UpdateInvoice.safeParse({
-    customerId: formData.get('customerId'),
-    amount: formData.get('amount'),
-    status: formData.get('status'),
+    customerId: formData.get("customerId"),
+    amount: formData.get("amount"),
+    status: formData.get("status"),
   });
 
   if (!parsedData.success) {
     return {
       errors: parsedData.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Update Invoice.',
+      message: "Missing Fields. Failed to Update Invoice.",
     };
   }
   const { customerId, amount, status } = parsedData.data;
@@ -85,12 +95,31 @@ export async function updateInvoice(id: string, prevState: State, formData: Form
     //   message: "Database error: Failed to update invoice",
     // };
   }
-  revalidatePath('/dashboard/invoices');
-  redirect('/dashboard/invoices');
+  revalidatePath("/dashboard/invoices");
+  redirect("/dashboard/invoices");
 }
 
 export async function deleteInvoice(id: string) {
   throw new Error("Database error: Failed to delete invoice");
   await sql`DELETE FROM invoices WHERE id = ${id}`;
-  revalidatePath('/dashboard/invoices');
+  revalidatePath("/dashboard/invoices");
+}
+
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData,
+) {
+  try {
+    await signIn("credentials", formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return "Invalid credentials.";
+        default:
+          return "Something went wrong.";
+      }
+    }
+    throw error;
+  }
 }
