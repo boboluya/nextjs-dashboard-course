@@ -32,12 +32,12 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="mt-6 flow-root">
-      <div className="inline-block min-w-full align-middle">
-        <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
-          <div className="mt-3 ml-30">
+    <div className="flow-root">
+      <div className="w-full align-middle">
+        <div className="rounded-lg bg-gray-50 p-6 ">
+          <div className="mt-3 ml-3 mr-3 mb-3 bg-white rounded-lg">
             <Table>
-              <TableHeader>
+              <TableHeader className="bg-gray-50">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {

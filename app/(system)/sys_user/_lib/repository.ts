@@ -55,7 +55,7 @@ export async function selectUsers(sysUser: SysUser): Promise<SysUser[]> {
       : undefined,
     sysUser.email ? eq(sys_usersTable.email, sysUser.email) : undefined,
     sysUser.phoneNumber
-      ? eq(sys_usersTable.phone_number, sysUser.phoneNumber)
+      ? eq(sys_usersTable.phonenumber, sysUser.phoneNumber)
       : undefined,
     sysUser.sex ? eq(sys_usersTable.sex, sysUser.sex) : undefined,
     sysUser.avatar ? eq(sys_usersTable.avatar, sysUser.avatar) : undefined,
