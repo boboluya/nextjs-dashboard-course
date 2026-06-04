@@ -100,7 +100,7 @@ export type SysUser = {
   status?: string | null;
   deletedFlag?: string | null;
   loginIp?: string | null;
-  loginDatetime?: Date | null;
+  loginDate?: Date | null;
   createDept?: number;
   createBy?: number;
   createTime?: Date;
