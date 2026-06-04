@@ -26,6 +26,18 @@ export type Payment = {
 
 export const columns: ColumnDef<SysUser>[] = [
   {
+    accessorKey: "userId",
+    header: "Id",
+  },
+  {
+    accessorKey: "userName",
+    header: "Account",
+  },
+  {
+    accessorKey: "nickName",
+    header: "Name",
+  },
+  {
     accessorKey: "status",
     header: "Status",
   },

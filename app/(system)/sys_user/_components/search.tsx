@@ -45,17 +45,18 @@ export default function Search() {
     replace(`${pathname}?${params.toString()}`);
   }, 300);
   return (
-    <div className="flex flex-wrap items-center gap-6 p-4">
+    <div className="grid grid-cols-4 items-center gap-6 p-4  w-full items-center">
       {searchCols.map((param) => {
         return (
           <div key={param.prop} className="flex items-center gap-2">
             <label
               htmlFor={param.prop}
-              className="whitespace-nowrap text-lg font-medium text-gray-700 "
+              className="whitespace-nowrap text-sm font-medium text-gray-700 "
             >
               {param.label}
             </label>
             <Input
+              className="border-gray-500 border-2"
               id={param.prop}
               placeholder={`enter ${param.label}`}
               type={param.type}
@@ -71,7 +72,7 @@ export default function Search() {
           </div>
         );
       })}
-      <Button onClick={handleSearch} className="bg-black text-white">
+      <Button onClick={handleSearch} className="bg-black text-white ml-auto w-1/2">
         Search
       </Button>
     </div>

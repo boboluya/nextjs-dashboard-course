@@ -1,8 +1,9 @@
-"use server"
+"use server";
 import { db } from "@/src/index";
 import { sys_usersTable } from "@/src/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, like } from "drizzle-orm";
 import { SysUser } from "@/app/lib/definitions";
+import { PageParams } from "./type";
 
 function dbMapping(user: typeof sys_usersTable.$inferSelect): SysUser {
   return {
@@ -11,18 +12,17 @@ function dbMapping(user: typeof sys_usersTable.$inferSelect): SysUser {
     userName: user.user_name ?? null,
     nickName: user.nick_name ?? null,
     email: String(user.email) ?? null,
-    phoneNumber: String(user.phone_number) ?? null,
+    phoneNumber: String(user.phonenumber) ?? null,
     sex: user.sex ?? null,
     avatar: user.avatar ?? null,
     password: user.password ?? null,
     status: user.status ?? null,
     deletedFlag: user.del_flag ?? null,
     loginIp: user.login_ip ?? null,
-    loginDatetime: user.login_datetime ?? null,
+    loginDate: user.login_date ?? null,
     createDept: user.create_dept ?? null,
     createBy: user.create_by ?? null,
     createTime: user.create_time ?? null,
-    updateDept: user.update_dept ?? null,
     updateBy: user.update_by ?? null,
     updateTime: user.update_time ?? null,
     remark: user.remark ?? null,
@@ -43,19 +43,19 @@ export async function findUserById(id: number): Promise<SysUser[]> {
   return result.map(dbMapping);
 }
 
-export async function selectUsers(sysUser: SysUser): Promise<SysUser[]> {
+export async function selectUsers(sysUser: PageParams): Promise<SysUser[]> {
   const conditions = [
     sysUser.userId ? eq(sys_usersTable.user_id, sysUser.userId) : undefined,
     sysUser.deptId ? eq(sys_usersTable.dept_id, sysUser.deptId) : undefined,
     sysUser.userName
-      ? eq(sys_usersTable.user_name, sysUser.userName)
+      ? like(sys_usersTable.user_name, `%${sysUser.userName}%`)
       : undefined,
     sysUser.nickName
-      ? eq(sys_usersTable.nick_name, sysUser.nickName)
+      ? like(sys_usersTable.nick_name, `%${sysUser.nickName}%`)
       : undefined,
     sysUser.email ? eq(sys_usersTable.email, sysUser.email) : undefined,
     sysUser.phoneNumber
-      ? eq(sys_usersTable.phonenumber, sysUser.phoneNumber)
+      ? like(sys_usersTable.phonenumber, sysUser.phoneNumber)
       : undefined,
     sysUser.sex ? eq(sys_usersTable.sex, sysUser.sex) : undefined,
     sysUser.avatar ? eq(sys_usersTable.avatar, sysUser.avatar) : undefined,
@@ -69,6 +69,35 @@ export async function selectUsers(sysUser: SysUser): Promise<SysUser[]> {
     .from(sys_usersTable)
     .where(
       conditions.length > 0 ? and(...conditions.filter(Boolean)) : undefined,
-    );
+    )
+    .limit(Number(sysUser.pageSize))
+    .offset((Number(sysUser.pageNum) - 1) * Number(sysUser.pageSize));
   return result.map(dbMapping);
+}
+
+export async function selectTotal(sysUser: PageParams): Promise<number> {
+  const conditions = [
+    sysUser.userId ? eq(sys_usersTable.user_id, sysUser.userId) : undefined,
+    sysUser.deptId ? eq(sys_usersTable.dept_id, sysUser.deptId) : undefined,
+    sysUser.userName
+      ? like(sys_usersTable.user_name, `%${sysUser.userName}%`)
+      : undefined,
+    sysUser.nickName
+      ? like(sys_usersTable.nick_name, `%${sysUser.nickName}%`)
+      : undefined,
+    sysUser.email ? eq(sys_usersTable.email, sysUser.email) : undefined,
+    sysUser.phoneNumber
+      ? like(sys_usersTable.phonenumber, `%${sysUser.phoneNumber}%`)
+      : undefined,
+    sysUser.sex ? eq(sys_usersTable.sex, sysUser.sex) : undefined,
+    sysUser.status ? eq(sys_usersTable.status, sysUser.status) : undefined,
+    sysUser.deletedFlag
+      ? eq(sys_usersTable.del_flag, sysUser.deletedFlag)
+      : undefined,
+  ].filter(Boolean);
+  const result = await db.$count(
+    sys_usersTable,
+    conditions.length > 0 ? and(...conditions) : undefined,
+  );
+  return Math.ceil(result / Number(sysUser.pageSize));
 }

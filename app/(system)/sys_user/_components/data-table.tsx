@@ -34,10 +34,10 @@ export function DataTable<TData, TValue>({
   return (
     <div className="flow-root">
       <div className="w-full align-middle">
-        <div className="rounded-lg bg-gray-50 p-6 ">
-          <div className="mt-3 ml-3 mr-3 mb-3 bg-white rounded-lg">
+        <div className="rounded-lg bg-gray-100 p-6">
+          <div className="m-3 bg-white rounded-lg">
             <Table>
-              <TableHeader className="bg-gray-50">
+              <TableHeader className="bg-gray-100">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {

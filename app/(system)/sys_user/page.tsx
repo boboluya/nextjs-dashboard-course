@@ -1,20 +1,30 @@
 import { columns, Payment } from "./_components/columns";
 import { DataTable } from "./_components/data-table";
-import { searchPages } from "./_lib/actions";
+import { searchPages, searchTotal } from "./_lib/actions";
 import { SysUser } from "@/app/lib/definitions";
 import Search from "./_components/search";
+import { PageParams } from "./_lib/type";
+import PaginationSysUser from "./_components/pagination";
 
-export default async function DemoPage() {
-  const query: Partial<SysUser> = {};
-  const data = await searchPages({ ...query });
+export default async function DemoPage(props: {
+  searchParams: Promise<PageParams>;
+}) {
+  const queryParams = await props.searchParams;
+  const data = await searchPages({ ...queryParams });
+  const totalPages = await searchTotal({ ...queryParams });
+  const pageNum = queryParams.pageNum ? Number(queryParams.pageNum) : 1;
+  const pageSize = queryParams.pageSize ? Number(queryParams.pageSize) : 10;
 
   return (
-    <div>
-      <div className="flex gap-4">
+    <div className="p-1">
+      <div className="flex">
         <Search />
       </div>
-      <div className="container mx-auto py-10">
+      <div className="">
         <DataTable columns={columns} data={data} />
+      </div>
+      <div className="m-3">
+        <PaginationSysUser pageNum={pageNum} pageSize={pageSize} totalPages={totalPages} />
       </div>
     </div>
   );
