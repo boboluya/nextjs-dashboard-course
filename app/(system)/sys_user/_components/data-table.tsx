@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-
+import { SysUser } from "@/app/lib/definitions";
 import {
   Table,
   TableBody,
@@ -16,72 +10,39 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-}
-
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
+export function DataTable({ data }: { data: SysUser[] }) {
   return (
     <div className="flow-root">
       <div className="w-full align-middle">
         <div className="rounded-lg bg-gray-100 p-6">
           <div className="m-3 bg-white rounded-lg">
             <Table>
-              <TableHeader className="bg-gray-100">
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
-                      return (
-                        <TableHead key={header.id}>
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext(),
-                              )}
-                        </TableHead>
-                      );
-                    })}
-                  </TableRow>
-                ))}
+              <TableHeader>
+                <TableRow className="border-b-0 bg-gray-100">
+                  {/*<TableHead>Id</TableHead>*/}
+                  <TableHead>Name</TableHead>
+                  <TableHead>Account</TableHead>
+                  <TableHead>Sex</TableHead>
+                  <TableHead className="flex justify-end">
+                    <span className="">Action</span>
+                  </TableHead>
+                </TableRow>
               </TableHeader>
               <TableBody>
-                {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
+                {data.map((row, index) => {
+                  return (
                     <TableRow
-                      key={row.id}
-                      data-state={row.getIsSelected() && "selected"}
+                      className="broder-1 border-gray-400 border-b-2 last:border-0"
+                      key={row.userId}
                     >
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext(),
-                          )}
-                        </TableCell>
-                      ))}
+                      {/*<TableCell>{row.userId}</TableCell>*/}
+                      <TableCell>{row.nickName}</TableCell>
+                      <TableCell>{row.userName}</TableCell>
+                      <TableCell>{row.sex}</TableCell>
+                      <TableCell></TableCell>
                     </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="h-24 text-center"
-                    >
-                      No results.
-                    </TableCell>
-                  </TableRow>
-                )}
+                  );
+                })}
               </TableBody>
             </Table>
           </div>

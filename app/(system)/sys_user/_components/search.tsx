@@ -45,7 +45,7 @@ export default function Search() {
     replace(`${pathname}?${params.toString()}`);
   }, 300);
   return (
-    <div className="grid grid-cols-4 items-center gap-6 p-4  w-full items-center">
+    <div className="grid grid-cols-4 gap-6 p-4  w-full items-center">
       {searchCols.map((param) => {
         return (
           <div key={param.prop} className="flex items-center gap-2">

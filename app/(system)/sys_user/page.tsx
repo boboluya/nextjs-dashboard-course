@@ -10,10 +10,10 @@ export default async function DemoPage(props: {
   searchParams: Promise<PageParams>;
 }) {
   const queryParams = await props.searchParams;
+  queryParams.pageNum = queryParams.pageNum ? Number(queryParams.pageNum) : 1;
+  queryParams.pageSize = queryParams.pageSize ? Number(queryParams.pageSize) : 10;
   const data = await searchPages({ ...queryParams });
   const totalPages = await searchTotal({ ...queryParams });
-  const pageNum = queryParams.pageNum ? Number(queryParams.pageNum) : 1;
-  const pageSize = queryParams.pageSize ? Number(queryParams.pageSize) : 10;
 
   return (
     <div className="p-1">
@@ -21,10 +21,10 @@ export default async function DemoPage(props: {
         <Search />
       </div>
       <div className="">
-        <DataTable columns={columns} data={data} />
+        <DataTable data={data} />
       </div>
       <div className="m-3">
-        <PaginationSysUser pageNum={pageNum} pageSize={pageSize} totalPages={totalPages} />
+        <PaginationSysUser pageNum={queryParams.pageNum} pageSize={queryParams.pageSize} totalPages={totalPages} />
       </div>
     </div>
   );

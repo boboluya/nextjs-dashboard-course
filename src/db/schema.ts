@@ -15,7 +15,7 @@ export const usersTable = pgTable("users2", {
 });
 
 export const sys_usersTable = pgTable("sys_user", {
-  user_id: bigserial({ mode: "number" }),
+  user_id: bigserial({ mode: "number" }).primaryKey(),
   dept_id: integer(),
   user_name: varchar({ length: 20 }).notNull(),
   nick_name: varchar({ length: 20 }).notNull(),
