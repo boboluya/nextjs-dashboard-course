@@ -101,3 +101,21 @@ export async function selectTotal(sysUser: PageParams): Promise<number> {
   );
   return Math.ceil(result / Number(sysUser.pageSize));
 }
+type InsertUser = typeof sys_usersTable.$inferInsert;
+
+export async function insertUser(user: SysUser) {
+  const newUser = await db.insert(sys_usersTable).values({
+    user_name: user.userName ?? "",
+    nick_name: user.nickName ?? "",
+    password: user.password ?? "",
+    create_dept: user.deptId ?? 0,
+    create_by: 1,
+    create_time: user.createTime ?? new Date(),
+    update_by: 1,
+    update_time: new Date(),
+    email: user.email ?? null,
+    phonenumber: user.phoneNumber ?? null,
+    sex: user.sex ?? "0",
+  }).returning();
+  console.log("新用户ID:", newUser);
+}

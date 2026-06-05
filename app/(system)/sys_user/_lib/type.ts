@@ -1,7 +1,7 @@
 import { SysUser } from "@/app/lib/definitions";
 export interface PageParams extends SysUser {
-  pageSize?: string;
-  pageNum?: string;
+  pageSize?: number;
+  pageNum?: number;
   sort?: string;
   category?: string;
 }
