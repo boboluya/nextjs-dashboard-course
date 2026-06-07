@@ -9,45 +9,196 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { EditUserButton, DeleteUserButton } from "./action-buttons";
+import {
+  UserCircleIcon,
+  EnvelopeIcon,
+  PhoneIcon,
+} from "@heroicons/react/24/outline";
+
+function SexBadge({ sex }: { sex: string | null | undefined }) {
+  if (sex === "1") {
+    return (
+      <span className="inline-flex items-center rounded-full border border-blue-200 bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+        Male
+      </span>
+    );
+  }
+  if (sex === "2") {
+    return (
+      <span className="inline-flex items-center rounded-full border border-pink-200 bg-pink-50 px-2.5 py-0.5 text-xs font-medium text-pink-700">
+        Female
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center rounded-full border border-gray-200 bg-gray-50 px-2.5 py-0.5 text-xs font-medium text-gray-500">
+      Other
+    </span>
+  );
+}
+
+function StatusBadge({ status }: { status: string | null | undefined }) {
+  if (status === "0") {
+    return (
+      <span className="inline-flex items-center gap-1.5">
+        <span className="h-2 w-2 rounded-full bg-green-500" />
+        <span className="text-sm text-green-700">Active</span>
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <span className="h-2 w-2 rounded-full bg-red-400" />
+      <span className="text-sm text-red-600">Disabled</span>
+    </span>
+  );
+}
 
 export function DataTable({ data }: { data: SysUser[] }) {
+  if (!data || data.length === 0) {
+    return (
+      <div className="rounded-lg border border-dashed border-gray-300 bg-white p-12 text-center">
+        <UserCircleIcon className="mx-auto h-12 w-12 text-gray-400" />
+        <h3 className="mt-2 text-sm font-semibold text-gray-900">No users</h3>
+        <p className="mt-1 text-sm text-gray-500">
+          Get started by creating a new user.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="flow-root">
-      <div className="w-full align-middle">
-        <div className="rounded-lg bg-gray-100 p-6">
-          <div className="m-3 bg-white rounded-lg">
-            <Table>
-              <TableHeader>
-                <TableRow className="border-b-0 bg-gray-100">
-                  {/*<TableHead>Id</TableHead>*/}
-                  <TableHead>Name</TableHead>
-                  <TableHead>Account</TableHead>
-                  <TableHead>Sex</TableHead>
-                  <TableHead className="flex justify-end">
-                    <span className="">Action</span>
-                  </TableHead>
+    <>
+      {/* Desktop Table */}
+      <div className="hidden md:block">
+        <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
+          <Table>
+            <TableHeader>
+              <TableRow className="border-b border-gray-100 bg-gray-50/80 hover:bg-gray-50/80">
+                <TableHead className="pl-6 font-semibold text-gray-700">
+                  User
+                </TableHead>
+                <TableHead className="font-semibold text-gray-700">
+                  Account
+                </TableHead>
+                <TableHead className="font-semibold text-gray-700">
+                  Email
+                </TableHead>
+                <TableHead className="font-semibold text-gray-700">
+                  Phone
+                </TableHead>
+                <TableHead className="font-semibold text-gray-700">
+                  Gender
+                </TableHead>
+                <TableHead className="font-semibold text-gray-700">
+                  Status
+                </TableHead>
+                <TableHead className="pr-6 text-right font-semibold text-gray-700">
+                  Actions
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {data.map((row) => (
+                <TableRow
+                  key={row.userId}
+                  className="border-b border-gray-50 transition-colors hover:bg-gray-50/50"
+                >
+                  <TableCell className="pl-6">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-sm font-semibold text-white">
+                        {row.nickName?.charAt(0)?.toUpperCase() || "U"}
+                      </div>
+                      <div>
+                        <p className="font-medium text-gray-900">
+                          {row.nickName}
+                        </p>
+                        <p className="text-xs text-gray-500">ID: {row.userId}</p>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-gray-600">
+                    {row.userName}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1.5 text-gray-600">
+                      <EnvelopeIcon className="h-4 w-4 text-gray-400" />
+                      <span className="text-sm">{row.email || "—"}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1.5 text-gray-600">
+                      <PhoneIcon className="h-4 w-4 text-gray-400" />
+                      <span className="text-sm">{row.phoneNumber || "—"}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <SexBadge sex={row.sex} />
+                  </TableCell>
+                  <TableCell>
+                    <StatusBadge status={row.status} />
+                  </TableCell>
+                  <TableCell className="pr-6">
+                    <div className="flex justify-end gap-2">
+                      <EditUserButton id={row.userId!} />
+                      <DeleteUserButton id={row.userId!} />
+                    </div>
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data.map((row, index) => {
-                  return (
-                    <TableRow
-                      className="broder-1 border-gray-400 border-b-2 last:border-0"
-                      key={row.userId}
-                    >
-                      {/*<TableCell>{row.userId}</TableCell>*/}
-                      <TableCell>{row.nickName}</TableCell>
-                      <TableCell>{row.userName}</TableCell>
-                      <TableCell>{row.sex}</TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </div>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </div>
-    </div>
+
+      {/* Mobile Cards */}
+      <div className="md:hidden">
+        <div className="space-y-3">
+          {data.map((row) => (
+            <div
+              key={row.userId}
+              className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-sm font-semibold text-white">
+                    {row.nickName?.charAt(0)?.toUpperCase() || "U"}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900">{row.nickName}</p>
+                    <p className="text-sm text-gray-500">@{row.userName}</p>
+                  </div>
+                </div>
+                <SexBadge sex={row.sex} />
+              </div>
+
+              <div className="mt-4 space-y-2 border-t border-gray-100 pt-3">
+                {row.email && (
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <EnvelopeIcon className="h-4 w-4 text-gray-400" />
+                    {row.email}
+                  </div>
+                )}
+                {row.phoneNumber && (
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <PhoneIcon className="h-4 w-4 text-gray-400" />
+                    {row.phoneNumber}
+                  </div>
+                )}
+                <div className="flex items-center gap-2">
+                  <StatusBadge status={row.status} />
+                </div>
+              </div>
+
+              <div className="mt-4 flex justify-end gap-2 border-t border-gray-100 pt-3">
+                <EditUserButton id={row.userId!} />
+                <DeleteUserButton id={row.userId!} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
   );
 }

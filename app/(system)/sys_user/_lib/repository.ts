@@ -119,3 +119,10 @@ export async function insertUser(user: SysUser) {
   }).returning();
   console.log("新用户ID:", newUser);
 }
+
+export async function softDeleteUser(userId: number) {
+  await db
+    .update(sys_usersTable)
+    .set({ del_flag: "2" })
+    .where(eq(sys_usersTable.user_id, userId));
+}

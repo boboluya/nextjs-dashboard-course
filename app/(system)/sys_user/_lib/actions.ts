@@ -1,7 +1,7 @@
 "use server";
 
 import { SysUser } from "@/app/lib/definitions";
-import { selectUsers, selectTotal, insertUser } from "./repository";
+import { selectUsers, selectTotal, insertUser, softDeleteUser } from "./repository";
 import z from "zod";
 import bcrypt from "bcrypt";
 import { error } from "console";
@@ -80,4 +80,14 @@ export async function createSysUser(prevState: State, formData: FormData) {
   }
   revalidatePath("/sys_user")
   redirect("/sys_user")
+}
+
+export async function deleteUser(userId: number) {
+  try {
+    await softDeleteUser(userId);
+  } catch (e) {
+    console.log(e);
+    throw error("Delete failed.");
+  }
+  revalidatePath("/sys_user");
 }
