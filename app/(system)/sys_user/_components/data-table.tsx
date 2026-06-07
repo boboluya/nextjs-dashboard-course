@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { EditUserButton, DeleteUserButton } from "./action-buttons";
+import { ResetPasswordButton } from "./reset-password-button";
 import { Tag, StatusTag } from "@/components/custome_ui/tag";
 import {
   UserCircleIcon,
@@ -113,6 +114,7 @@ export function DataTable({ data }: { data: SysUser[] }) {
                   <TableCell className="pr-6">
                     <div className="flex justify-end gap-2">
                       <EditUserButton id={row.userId!} />
+                      <ResetPasswordButton userId={row.userId!} />
                       <DeleteUserButton id={row.userId!} />
                     </div>
                   </TableCell>
@@ -173,6 +175,7 @@ export function DataTable({ data }: { data: SysUser[] }) {
 
               <div className="mt-4 flex justify-end gap-2 border-t border-gray-100 pt-3">
                 <EditUserButton id={row.userId!} />
+                <ResetPasswordButton userId={row.userId!} />
                 <DeleteUserButton id={row.userId!} />
               </div>
             </div>

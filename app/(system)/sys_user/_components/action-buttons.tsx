@@ -11,9 +11,13 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export function CreateUserButton() {
   return (
@@ -29,12 +33,17 @@ export function CreateUserButton() {
 
 export function EditUserButton({ id }: { id: number }) {
   return (
-    <Link
-      href={`/sys_user/${id}/edit`}
-      className="rounded-md border p-2 hover:bg-gray-100"
-    >
-      <PencilIcon className="w-5" />
-    </Link>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Link
+          href={`/sys_user/${id}/edit`}
+          className="rounded-md border p-2 hover:bg-gray-100"
+        >
+          <PencilIcon className="w-5" />
+        </Link>
+      </TooltipTrigger>
+      <TooltipContent>Edit</TooltipContent>
+    </Tooltip>
   );
 }
 
@@ -44,15 +53,19 @@ export function DeleteUserButton({ id }: { id: number }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild className="bg-white">
-        <button
-          type="button"
-          className="rounded-md border p-2 hover:bg-gray-100"
-        >
-          <span className="sr-only">Delete</span>
-          <TrashIcon className="w-5" />
-        </button>
-      </DialogTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            type="button"
+            className="rounded-md border p-2 hover:bg-gray-100"
+            onClick={() => setOpen(true)}
+          >
+            <span className="sr-only">Delete</span>
+            <TrashIcon className="w-5" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>Delete</TooltipContent>
+      </Tooltip>
       <DialogContent showCloseButton={false} className="bg-white p-6">
         <DialogHeader>
           <DialogTitle>Confirm Delete</DialogTitle>

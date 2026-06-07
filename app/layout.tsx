@@ -2,6 +2,7 @@ import "@/app/ui/global.css";
 import { inter } from "@/app/ui/fonts";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -13,7 +14,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={cn("font-sans", geist.variable)}>
-      <body className={`${inter.className} antialiased`}>{children}</body>
+      <body className={`${inter.className} antialiased`}>
+        <TooltipProvider>
+          {children}
+        </TooltipProvider>
+      </body>
     </html>
   );
 }
