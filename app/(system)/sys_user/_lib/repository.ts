@@ -120,9 +120,36 @@ export async function insertUser(user: SysUser) {
   console.log("新用户ID:", newUser);
 }
 
+export async function updateUser(user: SysUser) {
+  await db
+    .update(sys_usersTable)
+    .set({
+      user_name: user.userName ?? "",
+      nick_name: user.nickName ?? "",
+      password: user.password ?? "",
+      email: user.email ?? null,
+      phonenumber: user.phoneNumber ?? null,
+      sex: user.sex ?? "0",
+      update_by: 1,
+      update_time: new Date(),
+    })
+    .where(eq(sys_usersTable.user_id, user.userId!));
+}
+
 export async function softDeleteUser(userId: number) {
   await db
     .update(sys_usersTable)
     .set({ del_flag: "2" })
+    .where(eq(sys_usersTable.user_id, userId));
+}
+
+export async function resetUserPassword(userId: number, hashedPassword: string) {
+  await db
+    .update(sys_usersTable)
+    .set({
+      password: hashedPassword,
+      update_by: 1,
+      update_time: new Date(),
+    })
     .where(eq(sys_usersTable.user_id, userId));
 }
