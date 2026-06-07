@@ -10,50 +10,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { EditUserButton, DeleteUserButton } from "./action-buttons";
+import { Tag, StatusTag } from "@/app/ui/tag";
 import {
   UserCircleIcon,
   EnvelopeIcon,
   PhoneIcon,
 } from "@heroicons/react/24/outline";
-
-function SexBadge({ sex }: { sex: string | null | undefined }) {
-  if (sex === "1") {
-    return (
-      <span className="inline-flex items-center rounded-full border border-blue-200 bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
-        Male
-      </span>
-    );
-  }
-  if (sex === "2") {
-    return (
-      <span className="inline-flex items-center rounded-full border border-pink-200 bg-pink-50 px-2.5 py-0.5 text-xs font-medium text-pink-700">
-        Female
-      </span>
-    );
-  }
-  return (
-    <span className="inline-flex items-center rounded-full border border-gray-200 bg-gray-50 px-2.5 py-0.5 text-xs font-medium text-gray-500">
-      Other
-    </span>
-  );
-}
-
-function StatusBadge({ status }: { status: string | null | undefined }) {
-  if (status === "0") {
-    return (
-      <span className="inline-flex items-center gap-1.5">
-        <span className="h-2 w-2 rounded-full bg-green-500" />
-        <span className="text-sm text-green-700">Active</span>
-      </span>
-    );
-  }
-  return (
-    <span className="inline-flex items-center gap-1.5">
-      <span className="h-2 w-2 rounded-full bg-red-400" />
-      <span className="text-sm text-red-600">Disabled</span>
-    </span>
-  );
-}
 
 export function DataTable({ data }: { data: SysUser[] }) {
   if (!data || data.length === 0) {
@@ -134,10 +96,19 @@ export function DataTable({ data }: { data: SysUser[] }) {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <SexBadge sex={row.sex} />
+                    {row.sex === "1" ? (
+                      <Tag text="Male" color="blue" />
+                    ) : row.sex === "2" ? (
+                      <Tag text="Female" color="pink" />
+                    ) : (
+                      <Tag text="Other" color="gray" />
+                    )}
                   </TableCell>
                   <TableCell>
-                    <StatusBadge status={row.status} />
+                    <StatusTag
+                      text={row.status === "0" ? "Active" : "Disabled"}
+                      color={row.status === "0" ? "green" : "red"}
+                    />
                   </TableCell>
                   <TableCell className="pr-6">
                     <div className="flex justify-end gap-2">
@@ -170,7 +141,13 @@ export function DataTable({ data }: { data: SysUser[] }) {
                     <p className="text-sm text-gray-500">@{row.userName}</p>
                   </div>
                 </div>
-                <SexBadge sex={row.sex} />
+                {row.sex === "1" ? (
+                  <Tag text="Male" color="blue" />
+                ) : row.sex === "2" ? (
+                  <Tag text="Female" color="pink" />
+                ) : (
+                  <Tag text="Other" color="gray" />
+                )}
               </div>
 
               <div className="mt-4 space-y-2 border-t border-gray-100 pt-3">
@@ -187,7 +164,10 @@ export function DataTable({ data }: { data: SysUser[] }) {
                   </div>
                 )}
                 <div className="flex items-center gap-2">
-                  <StatusBadge status={row.status} />
+                  <StatusTag
+                    text={row.status === "0" ? "Active" : "Disabled"}
+                    color={row.status === "0" ? "green" : "red"}
+                  />
                 </div>
               </div>
 
