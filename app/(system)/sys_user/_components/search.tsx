@@ -59,7 +59,7 @@ export default function Search() {
   const hasFilters = Object.values(query).some((v) => v !== "");
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+    <div className="rounded-lg border border-gray-200 bg-white p-4">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {searchCols.map((param) => (
           <div key={param.prop} className="flex flex-col gap-1.5">

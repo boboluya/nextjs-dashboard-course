@@ -2,13 +2,24 @@
 
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { useState } from "react";
 import { deleteUser } from "../_lib/actions";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 export function CreateUserButton() {
   return (
     <Link
       href="/sys_user/create"
-      className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+      className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
     >
       <span className="hidden md:block">Create User</span>{" "}
       <PlusIcon className="h-5 md:ml-4" />
@@ -28,16 +39,38 @@ export function EditUserButton({ id }: { id: number }) {
 }
 
 export function DeleteUserButton({ id }: { id: number }) {
+  const [open, setOpen] = useState(false);
   const handleDelete = deleteUser.bind(null, id);
+
   return (
-    <form action={handleDelete}>
-      <button
-        type="submit"
-        className="rounded-md border p-2 hover:bg-gray-100"
-      >
-        <span className="sr-only">Delete</span>
-        <TrashIcon className="w-5" />
-      </button>
-    </form>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild className="bg-white">
+        <button
+          type="button"
+          className="rounded-md border p-2 hover:bg-gray-100"
+        >
+          <span className="sr-only">Delete</span>
+          <TrashIcon className="w-5" />
+        </button>
+      </DialogTrigger>
+      <DialogContent showCloseButton={false} className="bg-white p-6">
+        <DialogHeader>
+          <DialogTitle>Confirm Delete</DialogTitle>
+          <DialogDescription>
+            Are you sure you want to delete this user? This action cannot be undone.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter className="">
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+          <form action={handleDelete}>
+            <Button variant="outline" type="submit" className="border-red-500 text-red-500">
+              Delete
+            </Button>
+          </form>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -21,9 +21,10 @@ import {
   CheckCircleIcon,
   ArrowPathIcon
 } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 export function CreateForm(data: {
-  sexDict: Record<string, string>[]
+  sexDict?: Record<string, string>[]
 }) {
   const sexDicts = [
     { dictValue: "1", dictLabel: "Male" },
@@ -54,9 +55,9 @@ export function CreateForm(data: {
               Account
             </label>
             <div className="relative">
-              <Input 
-                id="userName-field" 
-                name="userName" 
+              <Input
+                id="userName-field"
+                name="userName"
                 placeholder="Enter account name"
                 className="pl-10 border-gray-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-200"
               />
@@ -80,9 +81,9 @@ export function CreateForm(data: {
               Name
             </label>
             <div className="relative">
-              <Input 
-                id="nickName-field" 
-                name="nickName" 
+              <Input
+                id="nickName-field"
+                name="nickName"
                 placeholder="Enter user name"
                 className="pl-10 border-gray-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-200"
               />
@@ -106,10 +107,10 @@ export function CreateForm(data: {
               Password
             </label>
             <div className="relative">
-              <Input 
-                id="password-field" 
-                name="password" 
-                type="password" 
+              <Input
+                id="password-field"
+                name="password"
+                type="password"
                 placeholder="Enter password"
                 className="pl-10 border-gray-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-200"
               />
@@ -133,10 +134,10 @@ export function CreateForm(data: {
               Email
             </label>
             <div className="relative">
-              <Input 
-                id="email-field" 
-                name="email" 
-                type="email" 
+              <Input
+                id="email-field"
+                name="email"
+                type="email"
                 placeholder="Enter email address"
                 className="pl-10 border-gray-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-200"
               />
@@ -160,10 +161,10 @@ export function CreateForm(data: {
               Phone
             </label>
             <div className="relative">
-              <Input 
-                id="phonenumber-field" 
-                name="phonenumber" 
-                type="number" 
+              <Input
+                id="phonenumber-field"
+                name="phonenumber"
+                type="number"
                 placeholder="Enter phone number"
                 className="pl-10 border-gray-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-200"
               />
@@ -209,15 +210,17 @@ export function CreateForm(data: {
               Fields marked with * are required
             </p>
             <div className="flex gap-3">
-              <Button 
-                type="button" 
-                variant="outline" 
+              <Button asChild
+                type="button"
+                variant="outline"
                 className="px-6 border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200"
               >
-                Cancel
+                <Link href="/sys_user">
+                  Cancle
+                </Link>
               </Button>
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="px-8 bg-linear-to-r from-blue-500 to-blue-500 text-white hover:from-blue-600 hover:to-indigo-700 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.02]"
                 disabled={isPending}
               >

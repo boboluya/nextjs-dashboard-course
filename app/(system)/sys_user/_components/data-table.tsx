@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { EditUserButton, DeleteUserButton } from "./action-buttons";
-import { Tag, StatusTag } from "@/app/ui/tag";
+import { Tag, StatusTag } from "@/components/custome_ui/tag";
 import {
   UserCircleIcon,
   EnvelopeIcon,
@@ -34,7 +34,7 @@ export function DataTable({ data }: { data: SysUser[] }) {
     <>
       {/* Desktop Table */}
       <div className="hidden md:block">
-        <div className="rounded-lg border border-gray-200 bg-white shadow-sm">
+        <div className="rounded-lg border border-gray-200 bg-white">
           <Table>
             <TableHeader>
               <TableRow className="border-b border-gray-100 bg-gray-50/80 hover:bg-gray-50/80">
@@ -69,7 +69,7 @@ export function DataTable({ data }: { data: SysUser[] }) {
                 >
                   <TableCell className="pl-6">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-sm font-semibold text-white">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-linear-to-br from-blue-500 to-indigo-600 text-sm font-semibold text-white">
                         {row.nickName?.charAt(0)?.toUpperCase() || "U"}
                       </div>
                       <div>
@@ -133,7 +133,7 @@ export function DataTable({ data }: { data: SysUser[] }) {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-sm font-semibold text-white">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-linear-to-br from-blue-500 to-indigo-600 text-sm font-semibold text-white">
                     {row.nickName?.charAt(0)?.toUpperCase() || "U"}
                   </div>
                   <div>
