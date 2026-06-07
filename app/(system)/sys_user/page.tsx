@@ -5,6 +5,7 @@ import PaginationSysUser from "./_components/pagination";
 import { DataTable } from "./_components/data-table";
 import { CreateUserButton } from "./_components/action-buttons";
 import { UsersIcon } from "@heroicons/react/24/outline";
+import Breadcrumbs from "@/components/custome_ui/breadcrumbs";
 
 export default async function SysUserPage(props: {
   searchParams: Promise<PageParams>;
@@ -19,20 +20,19 @@ export default async function SysUserPage(props: {
     <div className="w-full">
       {/* Page Header */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50">
-            <UsersIcon className="h-6 w-6 text-blue-600" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Users</h1>
-            <p className="text-sm text-gray-500">Manage system user accounts</p>
-          </div>
+        <div
+          className="m-2">
+          <Breadcrumbs
+            breadcrumbs={[
+              { label: "Users", href: "/sys_user", active: true },
+            ]}
+          />
         </div>
         <CreateUserButton />
       </div>
 
       {/* Search Section */}
-      <div className="mt-6">
+      <div className="">
         <Search />
       </div>
 
