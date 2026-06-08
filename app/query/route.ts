@@ -1,16 +1,15 @@
-import postgres from "postgres";
-
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: false });
+import { db } from "@/src/index";
+import { sql } from "drizzle-orm";
 
 async function listInvoices() {
-  const data = await sql`
+  const result = await db.execute(sql`
     SELECT invoices.amount, customers.name
     FROM invoices
     JOIN customers ON invoices.customer_id = customers.id
     WHERE invoices.amount = 666;
-  `;
+  `);
 
-  return data;
+  return result.rows;
 }
 
 export async function GET() {
