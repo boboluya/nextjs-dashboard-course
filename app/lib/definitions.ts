@@ -109,3 +109,21 @@ export type SysUser = {
   updateTime?: Date;
   remark?: string | null;
 };
+
+export type SysMenu = {
+  id?: number;
+  path?: string;
+  type?: string;
+  parentId?: number | null;
+  sorting?: number;
+  name?: string;
+  label?: string;
+  perms?: string | null;
+  status?: number;
+  hiding?: number;
+  createTime?: Date;
+  createBy?: number;
+  updateTime?: Date;
+  updateBy?: number;
+  delFlag?: string | null;
+};

@@ -8,6 +8,13 @@
       "when": 1780300538129,
       "tag": "0000_cuddly_mandrill",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1780919820947,
+      "tag": "0001_silly_killmonger",
+      "breakpoints": true
     }
   ]
 }
