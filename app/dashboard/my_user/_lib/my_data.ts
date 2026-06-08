@@ -1,12 +1,6 @@
 import "server-only";
-import postgres from "postgres";
 import { db } from "@/src/index";
-
-const db_url = process.env.POSTGRES_URL;
-
-if (!db_url) {
-  throw new Error("POSTGRES_URL environment variable is not set");
-}
+import { sql } from "drizzle-orm";
 
 export type User = {
   userId: number;
@@ -24,7 +18,7 @@ export async function getTenUsers(
   pageSize: number,
 ): Promise<User[]> {
   // await new Promise((resolve) => setTimeout(resolve, 1000));
-  const result = await db<User[]>`SELECT
+  const result = await db.execute(sql`SELECT
     user_id as "userId",
     user_name as "userName",
     nick_name as "nickName",
@@ -35,6 +29,6 @@ export async function getTenUsers(
     FROM sys_user
     WHERE nick_name LIKE ${`%${queryName}%`}
     ORDER BY create_time DESC
-    LIMIT ${pageSize} OFFSET ${(page - 1) * pageSize}`;
-  return result;
+    LIMIT ${pageSize} OFFSET ${(page - 1) * pageSize}`);
+  return result.rows as User[];
 }
