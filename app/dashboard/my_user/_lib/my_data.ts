@@ -1,13 +1,12 @@
 import "server-only";
 import postgres from "postgres";
+import { db } from "@/src/index";
 
 const db_url = process.env.POSTGRES_URL;
 
 if (!db_url) {
   throw new Error("POSTGRES_URL environment variable is not set");
 }
-
-const db = postgres(db_url, { ssl: false });
 
 export type User = {
   userId: number;

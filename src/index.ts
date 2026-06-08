@@ -6,11 +6,11 @@ import pg from 'pg';
 import * as schema from './db/schema';
 // You can specify any property from the node-postgres connection options
 const pool = new pg.Pool({
-  connectionString: process.env.DATABASE_URL!,
+  connectionString: process.env.POSTGRES_URL!,
   max: 10,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
-  ssl: false,
+  ssl: true,
 });
 
 export const db = drizzle(pool, { schema });

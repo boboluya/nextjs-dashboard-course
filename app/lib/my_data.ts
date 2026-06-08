@@ -1,12 +1,10 @@
-import postgres from "postgres";
 
 const db_url = process.env.POSTGRES_URL;
+import { db } from "@/src/index";
 
 if (!db_url) {
   throw new Error("POSTGRES_URL environment variable is not set");
 }
-
-const db = postgres(db_url, { ssl: false });
 
 type User = {
   userId: number;
