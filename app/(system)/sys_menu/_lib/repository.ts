@@ -140,3 +140,14 @@ export async function softDeleteMenu(id: number) {
     .set({ del_flag: "2" })
     .where(eq(sys_menuTable.id, id));
 }
+
+/** Fetch all non-deleted menus (no pagination) — for building trees. */
+export async function selectAllMenus(): Promise<SysMenu[]> {
+  const result = await db
+    .select()
+    .from(sys_menuTable)
+    .where(
+      or(isNull(sys_menuTable.del_flag), eq(sys_menuTable.del_flag, "0")),
+    );
+  return result.map(dbMapping);
+}

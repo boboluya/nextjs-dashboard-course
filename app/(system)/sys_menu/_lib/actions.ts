@@ -1,7 +1,7 @@
 "use server";
 
 import { SysMenu } from "@/app/lib/definitions";
-import { selectMenus, selectTotal, insertMenu, updateMenu, softDeleteMenu, findMenuById } from "./repository";
+import { selectMenus, selectTotal, insertMenu, updateMenu, softDeleteMenu, findMenuById, selectAllMenus } from "./repository";
 import z from "zod";
 import { error } from "console";
 import { revalidatePath } from "next/cache";
@@ -113,6 +113,11 @@ export async function createSysMenu(prevState: State, formData: FormData) {
 
 export async function fetchMenuById(id: number): Promise<SysMenu[]> {
   return await findMenuById(id);
+}
+
+/** Fetch all menus (no pagination) — for building tree structures. */
+export async function fetchAllMenus(): Promise<SysMenu[]> {
+  return await selectAllMenus();
 }
 
 export async function updateSysMenu(id: number, prevState: EditState, formData: FormData): Promise<EditState> {

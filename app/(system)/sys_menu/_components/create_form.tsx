@@ -23,6 +23,7 @@ import {
   EyeSlashIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { TreeSelect, type TreeNode } from "./tree-select";
 
 const typeDicts = [
   { dictValue: "D", dictLabel: "Directory" },
@@ -41,10 +42,11 @@ const hidingDicts = [
   { dictValue: "1", dictLabel: "Hide" },
 ]
 
-export function CreateForm() {
+export function CreateForm({ treeData }: { treeData: TreeNode[] }) {
   const [typeValue, setTypeValue] = useState("");
   const [statusValue, setStatusValue] = useState("0");
   const [hidingValue, setHidingValue] = useState("0");
+  const [parentId, setParentId] = useState<number | null>(null);
   const initialState: State = { errors: {}, message: null }
   const [state, formAction, isPending] = useActionState(createSysMenu, initialState)
   return (
@@ -176,18 +178,15 @@ export function CreateForm() {
           <div className="space-y-2">
             <label htmlFor="parentId-field" className="flex items-center gap-2 text-sm font-semibold text-gray-700">
               <QueueListIcon className="h-4 w-4 text-gray-500" />
-              Parent ID
+              Parent Menu
             </label>
-            <div className="relative">
-              <Input
-                id="parentId-field"
-                name="parentId"
-                type="number"
-                placeholder="Leave empty for root"
-                className="pl-10 border-gray-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-200"
-              />
-              <QueueListIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-            </div>
+            <TreeSelect
+              treeData={treeData}
+              value={parentId}
+              onValueChange={setParentId}
+              name="parentId"
+              placeholder="Root (no parent)"
+            />
           </div>
 
           {/* Sorting Field */}
