@@ -23,6 +23,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { SysMenu } from "@/app/lib/definitions";
+import { TreeSelect, type TreeNode } from "./tree-select";
 
 const typeDicts = [
   { dictValue: "D", dictLabel: "Directory" },
@@ -41,10 +42,11 @@ const hidingDicts = [
   { dictValue: "1", dictLabel: "Hide" },
 ]
 
-export function EditForm({ menu }: { menu: SysMenu }) {
+export function EditForm({ menu, treeData, excludeIds }: { menu: SysMenu; treeData: TreeNode[]; excludeIds?: number[] }) {
   const [typeValue, setTypeValue] = useState(menu.type ?? "");
   const [statusValue, setStatusValue] = useState(String(menu.status ?? "0"));
   const [hidingValue, setHidingValue] = useState(String(menu.hiding ?? "0"));
+  const [parentId, setParentId] = useState<number | null>(menu.parentId ?? null);
   const initialState: EditState = { errors: {}, message: null }
   const updateSysMenuWithId = updateSysMenu.bind(null, menu.id!)
   const [state, formAction, isPending] = useActionState(updateSysMenuWithId, initialState)
@@ -180,19 +182,16 @@ export function EditForm({ menu }: { menu: SysMenu }) {
           <div className="space-y-2">
             <label htmlFor="parentId-field" className="flex items-center gap-2 text-sm font-semibold text-gray-700">
               <QueueListIcon className="h-4 w-4 text-gray-500" />
-              Parent ID
+              Parent Menu
             </label>
-            <div className="relative">
-              <Input
-                id="parentId-field"
-                name="parentId"
-                type="number"
-                placeholder="Leave empty for root"
-                defaultValue={menu.parentId ?? ""}
-                className="pl-10 border-gray-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-200"
-              />
-              <QueueListIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-            </div>
+            <TreeSelect
+              treeData={treeData}
+              value={parentId}
+              onValueChange={setParentId}
+              name="parentId"
+              placeholder="Root (no parent)"
+              excludeIds={excludeIds}
+            />
           </div>
 
           {/* Sorting Field */}
