@@ -33,7 +33,7 @@ export function EditForm({ user }: { user: SysUser }) {
   const [state, formAction, isPending] = useActionState(updateSysUserWithId, initialState)
   return (
     <div className="m-6 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
-      <div className="bg-linear-to-r from-blue-500 to-indigo-600 p-6">
+      <div className="bg-blue-500 p-6">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
             <UserGroupIcon className="h-6 w-6 text-white" />

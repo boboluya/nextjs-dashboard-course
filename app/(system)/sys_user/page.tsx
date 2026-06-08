@@ -12,7 +12,9 @@ export default async function SysUserPage(props: {
 }) {
   const queryParams = await props.searchParams;
   queryParams.pageNum = queryParams.pageNum ? Number(queryParams.pageNum) : 1;
-  queryParams.pageSize = queryParams.pageSize ? Number(queryParams.pageSize) : 10;
+  queryParams.pageSize = queryParams.pageSize
+    ? Number(queryParams.pageSize)
+    : 10;
   const data = await searchPages({ ...queryParams });
   const totalPages = await searchTotal({ ...queryParams });
 
@@ -20,15 +22,14 @@ export default async function SysUserPage(props: {
     <div className="w-full">
       {/* Page Header */}
       <div className="flex items-center justify-between">
-        <div
-          className="m-2">
+        <div className="m-2">
           <Breadcrumbs
-            breadcrumbs={[
-              { label: "Users", href: "/sys_user", active: true },
-            ]}
+            breadcrumbs={[{ label: "Users", href: "/sys_user", active: true }]}
           />
         </div>
-        <CreateUserButton />
+        <div className="mr-5">
+          <CreateUserButton />
+        </div>
       </div>
 
       {/* Search Section */}
