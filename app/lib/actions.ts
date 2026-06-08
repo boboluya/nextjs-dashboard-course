@@ -1,11 +1,10 @@
 "use server";
 
 import { z } from "zod";
-import postgres from "postgres";
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: false });
+import { db } from "@/src/index";
+import { sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { error } from "node:console";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 
@@ -49,8 +48,8 @@ export async function createInvoice(prevState: State, formData: FormData) {
   const amountInCents = parsedData.data.amount * 100;
   const date = new Date().toISOString().split("T")[0];
   try {
-    await sql`INSERT INTO invoices (customer_id, amount, status, date) VALUES
-      (${parsedData.data.customerId}, ${amountInCents}, ${parsedData.data.status}, ${date})`;
+    await db.execute(sql`INSERT INTO invoices (customer_id, amount, status, date) VALUES
+      (${parsedData.data.customerId}, ${amountInCents}, ${parsedData.data.status}, ${date})`);
     console.log(parsedData);
   } catch (error) {
     console.error(error);
@@ -84,11 +83,11 @@ export async function updateInvoice(
   const amountInCents = amount * 100;
 
   try {
-    await sql`
+    await db.execute(sql`
     UPDATE invoices
     SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
     WHERE id = ${id}
-  `;
+  `);
   } catch (error) {
     console.error(error);
     // return {
@@ -101,7 +100,7 @@ export async function updateInvoice(
 
 export async function deleteInvoice(id: string) {
   throw new Error("Database error: Failed to delete invoice");
-  await sql`DELETE FROM invoices WHERE id = ${id}`;
+  await db.execute(sql`DELETE FROM invoices WHERE id = ${id}`);
   revalidatePath("/dashboard/invoices");
 }
 
