@@ -2,7 +2,9 @@ import {
   UserGroupIcon,
   HomeIcon,
   DocumentDuplicateIcon,
-  ArrowDownCircleIcon
+  ArrowDownCircleIcon,
+  FolderIcon,
+  ShieldCheckIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,6 +21,8 @@ const links = [
   },
   { name: "Customers", href: "/dashboard/customers", icon: UserGroupIcon },
   { name: "MyUser", href: "/dashboard/my_user", icon: ArrowDownCircleIcon },
+  { name: "Menus", href: "/sys_menu", icon: FolderIcon },
+  { name: "Roles", href: "/sys_role", icon: ShieldCheckIcon },
 ];
 
 export default function NavLinks() {
