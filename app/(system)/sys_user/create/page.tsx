@@ -1,7 +1,9 @@
 import { CreateForm } from "../_components/create_form";
+import { fetchAllRoles } from "../_lib/actions";
 import Breadcrumbs from "@/components/custome_ui/breadcrumbs";
 
 export default async function Page() {
+  const roles = await fetchAllRoles();
   return (
     <div>
       <Breadcrumbs
@@ -10,7 +12,7 @@ export default async function Page() {
           { label: "Create User", href: "/sys_user/create", active: true },
         ]}
       />
-      <CreateForm />
+      <CreateForm roles={roles} />
     </div>
   );
 }

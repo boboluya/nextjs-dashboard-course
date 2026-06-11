@@ -108,6 +108,7 @@ export type SysUser = {
   updateBy?: number;
   updateTime?: Date;
   remark?: string | null;
+  roleNames?: string[];
 };
 
 export type SysMenu = {

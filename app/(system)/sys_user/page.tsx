@@ -1,4 +1,4 @@
-import { searchPages, searchTotal } from "./_lib/actions";
+import { searchPages, searchTotal, fetchRoleNamesByUserIds } from "./_lib/actions";
 import Search from "./_components/search";
 import { PageParams } from "./_lib/type";
 import PaginationSysUser from "./_components/pagination";
@@ -17,6 +17,14 @@ export default async function SysUserPage(props: {
     : 10;
   const data = await searchPages({ ...queryParams });
   const totalPages = await searchTotal({ ...queryParams });
+
+  // Fetch role names for all users in this page
+  const userIds = data.map((u) => u.userId).filter((id): id is number => id !== undefined);
+  const roleNamesMap = await fetchRoleNamesByUserIds(userIds);
+  const enrichedData = data.map((u) => ({
+    ...u,
+    roleNames: u.userId ? roleNamesMap[u.userId] || [] : [],
+  }));
 
   return (
     <div className="w-full">
@@ -39,7 +47,7 @@ export default async function SysUserPage(props: {
 
       {/* Table */}
       <div className="mt-6">
-        <DataTable data={data} />
+        <DataTable data={enrichedData} />
       </div>
 
       {/* Pagination */}

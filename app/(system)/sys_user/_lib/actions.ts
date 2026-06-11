@@ -1,7 +1,8 @@
 "use server";
 
 import { SysUser } from "@/app/lib/definitions";
-import { selectUsers, selectTotal, insertUser, updateUser, softDeleteUser, findUserById, resetUserPassword } from "./repository";
+import { selectUsers, selectTotal, insertUser, updateUser, softDeleteUser, findUserById, resetUserPassword, findRolesByUserId, selectAllRoles, insertUserRole, deleteUserRoles, findRoleNamesByUserIds } from "./repository";
+import { SysRole } from "@/app/lib/definitions";
 import z from "zod";
 import bcrypt from "bcrypt";
 import { error } from "console";
@@ -73,6 +74,7 @@ export async function createSysUser(prevState: State, formData: FormData) {
       message: "Missing Fields. Failed to Create.",
     };
   }
+  const roleIds = formData.getAll("roleIds").map(Number).filter((id) => !isNaN(id));
   const date = new Date();
   const bcryptedPw = await bcrypt.hash(parsedData.data.password, 10)
   try {
@@ -86,7 +88,11 @@ export async function createSysUser(prevState: State, formData: FormData) {
       password: bcryptedPw,
     }
 
-    await insertUser(user);
+    const newUser = await insertUser(user);
+    // Assign roles if provided
+    if (roleIds.length > 0 && newUser && newUser[0]) {
+      await insertUserRole(newUser[0].user_id, roleIds);
+    }
   } catch (e) {
     console.log(e)
     throw error("Create failed.")
@@ -97,6 +103,21 @@ export async function createSysUser(prevState: State, formData: FormData) {
 
 export async function fetchUserById(userId: number): Promise<SysUser[]> {
   return await findUserById(userId);
+}
+
+export async function fetchRolesByUserId(userId: number): Promise<number[]> {
+  return await findRolesByUserId(userId);
+}
+
+export async function fetchAllRoles(): Promise<SysRole[]> {
+  return await selectAllRoles();
+}
+
+export async function fetchRoleNamesByUserIds(
+  userIds: number[],
+): Promise<Record<number, string[]>> {
+  const map = await findRoleNamesByUserIds(userIds);
+  return Object.fromEntries(map);
 }
 
 export async function updateSysUser(userId: number, prevState: EditState, formData: FormData): Promise<EditState> {
@@ -115,6 +136,7 @@ export async function updateSysUser(userId: number, prevState: EditState, formDa
       message: "Missing Fields. Failed to Update.",
     };
   }
+  const roleIds = formData.getAll("roleIds").map(Number).filter((id) => !isNaN(id));
   try {
     const user: SysUser = {
       userId: parsedData.data.userId,
@@ -125,6 +147,11 @@ export async function updateSysUser(userId: number, prevState: EditState, formDa
       phoneNumber: String(parsedData.data.phonenumber),
     }
     await updateUser(user);
+    // Update roles: delete existing, insert new
+    await deleteUserRoles(userId);
+    if (roleIds.length > 0) {
+      await insertUserRole(userId, roleIds);
+    }
   } catch (e) {
     console.log(e)
     throw error("Update failed.")

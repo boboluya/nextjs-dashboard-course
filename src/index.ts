@@ -13,34 +13,34 @@ const pool = new pg.Pool({
   ssl: false,
 });
 
-export const db = drizzle(pool, { schema });
+export const db = drizzle(pool, { schema,logger:true });
 
-async function main() {
-  const user2: typeof usersTable.$inferInsert = {
-    name: 'John',
-    age: 30,
-    email: 'john@example.com',
-  };
-  await db.insert(usersTable).values(user2);
-  console.log('New user created!')
-  const users = await db.select().from(usersTable);
-  console.log('Getting all users from the database: ', users)
-  /*
-  const users: {
-    id: number;
-    name: string;
-    age: number;
-    email: string;
-  }[]
-  */
-  await db
-    .update(usersTable)
-    .set({
-      age: 31,
-    })
-    .where(eq(usersTable.email, user2.email));
-  console.log('User info updated!')
-  await db.delete(usersTable).where(eq(usersTable.email, user2.email));
-  console.log('User deleted!')
-}
-main();
+// async function main() {
+//   const user2: typeof usersTable.$inferInsert = {
+//     name: 'John',
+//     age: 30,
+//     email: 'john@example.com',
+//   };
+//   await db.insert(usersTable).values(user2);
+//   console.log('New user created!')
+//   const users = await db.select().from(usersTable);
+//   console.log('Getting all users from the database: ', users)
+//   /*
+//   const users: {
+//     id: number;
+//     name: string;
+//     age: number;
+//     email: string;
+//   }[]
+//   */
+//   await db
+//     .update(usersTable)
+//     .set({
+//       age: 31,
+//     })
+//     .where(eq(usersTable.email, user2.email));
+//   console.log('User info updated!')
+//   await db.delete(usersTable).where(eq(usersTable.email, user2.email));
+//   console.log('User deleted!')
+// }
+// main();
