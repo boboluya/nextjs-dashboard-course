@@ -106,4 +106,15 @@ export const sys_menuTable = pgTable("sys_menu", {
    * 0: Not deleted; 1: Deleted
    */
   del_flag: varchar({ length: 1 }).default('0'),
-});
+ });
+
+
+ /** sys_user_role table */
+ export const sys_userRoleTable = pgTable("sys_user_role", {
+  /** user_role_id */
+  id: bigserial({ mode: "number" }).primaryKey(),
+  /** user_id */
+  user_id: bigint("user_id", { mode: "number" }).notNull(),
+  /** role_id */
+  role_id: bigint("role_id", { mode: "number" }).notNull()
+ });

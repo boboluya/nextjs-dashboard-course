@@ -1,8 +1,8 @@
 "use server";
 import { db } from "@/src/index";
-import { sys_usersTable } from "@/src/db/schema";
-import { eq, and, like } from "drizzle-orm";
-import { SysUser } from "@/app/lib/definitions";
+import { sys_usersTable, sys_userRoleTable, sys_roleTable } from "@/src/db/schema";
+import { eq, and, like, inArray } from "drizzle-orm";
+import { SysUser, SysRole } from "@/app/lib/definitions";
 import { PageParams } from "./type";
 
 function dbMapping(user: typeof sys_usersTable.$inferSelect): SysUser {
@@ -118,6 +118,7 @@ export async function insertUser(user: SysUser) {
     sex: user.sex ?? "0",
   }).returning();
   console.log("新用户ID:", newUser);
+  return newUser;
 }
 
 export async function updateUser(user: SysUser) {
@@ -152,4 +153,81 @@ export async function resetUserPassword(userId: number, hashedPassword: string) 
       update_time: new Date(),
     })
     .where(eq(sys_usersTable.user_id, userId));
+}
+
+// ============ User-Role Management ============
+
+export async function findRolesByUserId(userId: number): Promise<number[]> {
+  const result = await db
+    .select({ roleId: sys_userRoleTable.role_id })
+    .from(sys_userRoleTable)
+    .where(eq(sys_userRoleTable.user_id, userId));
+  return result.map((r) => r.roleId);
+}
+
+export async function selectAllRoles(): Promise<SysRole[]> {
+  const result = await db
+    .select()
+    .from(sys_roleTable)
+    .where(eq(sys_roleTable.del_flag, "0"));
+  return result.map((role) => ({
+    id: role.id ?? undefined,
+    name: role.name ?? undefined,
+    key: role.key ?? undefined,
+    dataScope: role.data_scope ?? undefined,
+    status: role.status ?? undefined,
+    createTime: role.create_time ?? undefined,
+    createBy: role.create_by ?? undefined,
+    updateTime: role.update_time ?? undefined,
+    updateBy: role.update_by ?? undefined,
+    delFlag: role.del_flag ?? null,
+  }));
+}
+
+export async function insertUserRole(userId: number, roleIds: number[]) {
+  if (roleIds.length === 0) return;
+  await db.insert(sys_userRoleTable).values(
+    roleIds.map((roleId) => ({
+      user_id: userId,
+      role_id: roleId,
+    })),
+  );
+}
+
+export async function deleteUserRoles(userId: number) {
+  await db
+    .delete(sys_userRoleTable)
+    .where(eq(sys_userRoleTable.user_id, userId));
+}
+
+/**
+ * Fetch role names for multiple user IDs in one query.
+ * Returns a Map<userId, roleName[]>.
+ */
+export async function findRoleNamesByUserIds(
+  userIds: number[],
+): Promise<Map<number, string[]>> {
+  if (userIds.length === 0) return new Map();
+  const result = await db
+    .select({
+      userId: sys_userRoleTable.user_id,
+      roleName: sys_roleTable.name,
+    })
+    .from(sys_userRoleTable)
+    .innerJoin(sys_roleTable, eq(sys_userRoleTable.role_id, sys_roleTable.id))
+    .where(
+      and(
+        inArray(sys_userRoleTable.user_id, userIds),
+        eq(sys_roleTable.del_flag, "0"),
+      ),
+    );
+
+  const map = new Map<number, string[]>();
+  for (const row of result) {
+    if (!map.has(row.userId)) {
+      map.set(row.userId, []);
+    }
+    map.get(row.userId)!.push(row.roleName);
+  }
+  return map;
 }

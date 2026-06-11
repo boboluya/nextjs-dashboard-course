@@ -22,15 +22,16 @@ import {
   ArrowPathIcon
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { SysRole } from "@/app/lib/definitions";
+import { RoleMultiSelect } from "./role-select";
 
-export function CreateForm(data: {
-  sexDict?: Record<string, string>[]
-}) {
+export function CreateForm({ roles }: { roles: SysRole[] }) {
   const sexDicts = [
     { dictValue: "1", dictLabel: "Male" },
     { dictValue: "2", dictLabel: "Female" },
   ]
   const [sexValue, setSexValue] = useState("");
+  const [selectedRoleIds, setSelectedRoleIds] = useState<number[]>([]);
   const initialState: State = { errors: {}, message: null }
   const [state, formAction, isPending] = useActionState(createSysUser, initialState)
   return (
@@ -202,6 +203,19 @@ export function CreateForm(data: {
                   </p>
                 ))}
             </div>
+          </div>
+
+          {/* Roles Field */}
+          <div className="space-y-2">
+            <label htmlFor="roles-field" className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+              <UserGroupIcon className="h-4 w-4 text-gray-500" />
+              Roles
+            </label>
+            <RoleMultiSelect
+              roles={roles}
+              selectedRoleIds={selectedRoleIds}
+              onChange={setSelectedRoleIds}
+            />
           </div>
         </div>
         <div className="pt-6 border-t border-gray-100">

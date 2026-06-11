@@ -20,14 +20,16 @@ import {
   ArrowPathIcon
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { SysUser } from "@/app/lib/definitions";
+import { SysUser, SysRole } from "@/app/lib/definitions";
+import { RoleMultiSelect } from "./role-select";
 
-export function EditForm({ user }: { user: SysUser }) {
+export function EditForm({ user, roles, selectedRoleIds: initialRoleIds }: { user: SysUser; roles: SysRole[]; selectedRoleIds: number[] }) {
   const sexDicts = [
     { dictValue: "1", dictLabel: "Male" },
     { dictValue: "2", dictLabel: "Female" },
   ]
   const [sexValue, setSexValue] = useState(user.sex ?? "");
+  const [selectedRoleIds, setSelectedRoleIds] = useState<number[]>(initialRoleIds);
   const initialState: EditState = { errors: {}, message: null }
   const updateSysUserWithId = updateSysUser.bind(null, user.userId!)
   const [state, formAction, isPending] = useActionState(updateSysUserWithId, initialState)
@@ -177,6 +179,19 @@ export function EditForm({ user }: { user: SysUser }) {
                   </p>
                 ))}
             </div>
+          </div>
+
+          {/* Roles Field */}
+          <div className="space-y-2">
+            <label htmlFor="roles-field" className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+              <UserGroupIcon className="h-4 w-4 text-gray-500" />
+              Roles
+            </label>
+            <RoleMultiSelect
+              roles={roles}
+              selectedRoleIds={selectedRoleIds}
+              onChange={setSelectedRoleIds}
+            />
           </div>
         </div>
         <div className="pt-6 border-t border-gray-100">

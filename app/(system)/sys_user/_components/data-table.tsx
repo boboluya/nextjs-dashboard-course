@@ -52,6 +52,9 @@ export function DataTable({ data }: { data: SysUser[] }) {
                   Phone
                 </TableHead>
                 <TableHead className="font-semibold text-gray-700">
+                  Roles
+                </TableHead>
+                <TableHead className="font-semibold text-gray-700">
                   Gender
                 </TableHead>
                 <TableHead className="font-semibold text-gray-700">
@@ -94,6 +97,17 @@ export function DataTable({ data }: { data: SysUser[] }) {
                     <div className="flex items-center gap-1.5 text-gray-600">
                       <PhoneIcon className="h-4 w-4 text-gray-400" />
                       <span className="text-sm">{row.phoneNumber || "—"}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-wrap gap-1">
+                      {row.roleNames && row.roleNames.length > 0 ? (
+                        row.roleNames.map((name, i) => (
+                          <Tag key={i} text={name} color="indigo" />
+                        ))
+                      ) : (
+                        <span className="text-sm text-gray-400">—</span>
+                      )}
                     </div>
                   </TableCell>
                   <TableCell>
@@ -153,6 +167,13 @@ export function DataTable({ data }: { data: SysUser[] }) {
               </div>
 
               <div className="mt-4 space-y-2 border-t border-gray-100 pt-3">
+                {row.roleNames && row.roleNames.length > 0 && (
+                  <div className="flex flex-wrap gap-1">
+                    {row.roleNames.map((name, i) => (
+                      <Tag key={i} text={name} color="indigo" />
+                    ))}
+                  </div>
+                )}
                 {row.email && (
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <EnvelopeIcon className="h-4 w-4 text-gray-400" />
