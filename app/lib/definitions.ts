@@ -127,3 +127,16 @@ export type SysMenu = {
   updateBy?: number;
   delFlag?: string | null;
 };
+
+export type SysRole = {
+  id?: number;
+  name?: string;
+  key?: string;
+  dataScope?: number;
+  status?: number;
+  createTime?: Date;
+  createBy?: number;
+  updateTime?: Date;
+  updateBy?: number;
+  delFlag?: string | null;
+};

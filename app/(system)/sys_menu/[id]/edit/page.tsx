@@ -5,7 +5,10 @@ import Breadcrumbs from "@/components/custome_ui/breadcrumbs";
 import { notFound } from "next/navigation";
 
 /** Collect the given node and all its descendant IDs from a flat list. */
-function collectDescendantIds(menus: { id: number; parentId: number | null }[], rootId: number): number[] {
+function collectDescendantIds(
+  menus: { id: number; parentId: number | null }[],
+  rootId: number,
+): number[] {
   const ids = [rootId];
   const childrenMap = new Map<number, number[]>();
   for (const m of menus) {
