@@ -25,7 +25,7 @@ export const sys_usersTable = pgTable("sys_user", {
   avatar: varchar({ length: 255 }),
   password: varchar({ length: 255 }).notNull(),
   status: varchar({ length: 1 }),
-  del_flag: varchar({ length: 1 }),
+  del_flag: varchar({ length: 1 }).default("0"),
   login_ip: varchar({ length: 50 }),
   login_date: timestamp({ withTimezone: true }),
   create_dept: integer().notNull(),
@@ -69,7 +69,7 @@ export const sys_menuTable = pgTable("sys_menu", {
   /** update_by */
   update_by: integer().notNull(),
   /** del_flag */
-  del_flag: varchar({ length: 1 }),
+  del_flag: varchar({ length: 1 }).default("0"),
 });
 
 /**
