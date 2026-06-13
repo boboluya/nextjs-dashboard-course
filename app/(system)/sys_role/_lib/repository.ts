@@ -1,6 +1,6 @@
 "use server";
 import { db } from "@/src/index";
-import { sys_roleTable } from "@/src/db/schema";
+import { sys_roleTable, sys_roleMenuTable, sys_menuTable } from "@/src/db/schema";
 import { eq, and, like, or, isNull } from "drizzle-orm";
 import { SysRole } from "@/app/lib/definitions";
 import { PageParams } from "./type";
@@ -95,6 +95,7 @@ export async function insertRole(role: SysRole) {
     update_time: new Date(),
   }).returning();
   console.log("新角色ID:", newRole);
+  return newRole;
 }
 
 export async function updateRole(role: SysRole) {
@@ -116,4 +117,58 @@ export async function softDeleteRole(id: number) {
     .update(sys_roleTable)
     .set({ del_flag: "2" })
     .where(eq(sys_roleTable.id, id));
+}
+
+// ============ Role-Menu Management ============
+
+/**
+ * 查询指定角色关联的所有菜单 ID
+ */
+export async function findMenuIdsByRoleId(roleId: number): Promise<number[]> {
+  const result = await db
+    .select({ menuId: sys_roleMenuTable.menu_id })
+    .from(sys_roleMenuTable)
+    .where(eq(sys_roleMenuTable.role_id, roleId));
+  return result.map((r) => r.menuId);
+}
+
+/**
+ * 批量插入角色-菜单关联
+ */
+export async function insertRoleMenus(roleId: number, menuIds: number[]) {
+  if (menuIds.length === 0) return;
+  await db.insert(sys_roleMenuTable).values(
+    menuIds.map((menuId) => ({
+      role_id: roleId,
+      menu_id: menuId,
+    })),
+  );
+}
+
+/**
+ * 删除指定角色的所有菜单关联
+ */
+export async function deleteRoleMenus(roleId: number) {
+  await db
+    .delete(sys_roleMenuTable)
+    .where(eq(sys_roleMenuTable.role_id, roleId));
+}
+
+/**
+ * 查询所有未删除的菜单（用于构建菜单树）
+ */
+export async function selectAllMenus(): Promise<{ id: number; parentId: number | null; label: string }[]> {
+  const result = await db
+    .select({
+      id: sys_menuTable.id,
+      parentId: sys_menuTable.parent_id,
+      label: sys_menuTable.label,
+    })
+    .from(sys_menuTable)
+    .where(or(isNull(sys_menuTable.del_flag), eq(sys_menuTable.del_flag, "0")));
+  return result.map((r) => ({
+    id: r.id,
+    parentId: r.parentId ?? null,
+    label: r.label ?? "",
+  }));
 }

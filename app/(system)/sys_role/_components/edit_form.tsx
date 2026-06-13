@@ -23,9 +23,11 @@ import {
   CheckCircleIcon,
   ArrowPathIcon,
   GlobeAltIcon,
+  QueueListIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { SysRole } from "@/app/lib/definitions";
+import { MenuTreeSelect, TreeNode } from "./menu-tree-select";
 
 /** 数据权限范围字典 */
 const dataScopeDicts = [
@@ -46,10 +48,13 @@ const statusDicts = [
 /**
  * 编辑角色表单
  * @param role 当前角色数据，用于表单默认值
+ * @param treeData 菜单树形数据
+ * @param selectedMenuIds 已选中的菜单 ID 列表
  */
-export function EditForm({ role }: { role: SysRole }) {
+export function EditForm({ role, treeData, selectedMenuIds: initialMenuIds }: { role: SysRole; treeData: TreeNode[]; selectedMenuIds: number[] }) {
   const [dataScopeValue, setDataScopeValue] = useState(String(role.dataScope ?? "1"));
   const [statusValue, setStatusValue] = useState(String(role.status ?? "1"));
+  const [selectedMenuIds, setSelectedMenuIds] = useState<number[]>(initialMenuIds);
   const initialState: EditState = { errors: {}, message: null };
   // 使用 bind 预绑定角色 ID
   const updateSysRoleWithId = updateSysRole.bind(null, role.id!);
@@ -180,6 +185,20 @@ export function EditForm({ role }: { role: SysRole }) {
                 </SelectGroup>
               </SelectContent>
             </Select>
+          </div>
+
+          {/* Menu Permissions 字段 - 跨两列 */}
+          <div className="md:col-span-2 space-y-2">
+            <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+              <QueueListIcon className="h-4 w-4 text-gray-500" />
+              Menu Permissions
+            </label>
+            <MenuTreeSelect
+              treeData={treeData}
+              selectedMenuIds={selectedMenuIds}
+              onChange={setSelectedMenuIds}
+              placeholder="Select menus for this role..."
+            />
           </div>
         </div>
 

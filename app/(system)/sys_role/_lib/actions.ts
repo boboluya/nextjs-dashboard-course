@@ -1,7 +1,10 @@
 "use server";
 
 import { SysRole } from "@/app/lib/definitions";
-import { selectRoles, selectTotal, insertRole, updateRole, softDeleteRole, findRoleById } from "./repository";
+import {
+  selectRoles, selectTotal, insertRole, updateRole, softDeleteRole, findRoleById,
+  findMenuIdsByRoleId, insertRoleMenus, deleteRoleMenus, selectAllMenus,
+} from "./repository";
 import z from "zod";
 import { error } from "console";
 import { revalidatePath } from "next/cache";
@@ -65,6 +68,10 @@ export async function createSysRole(prevState: State, formData: FormData) {
       message: "Missing Fields. Failed to Create.",
     };
   }
+
+  // 获取菜单 ID 列表
+  const menuIds = formData.getAll("menuIds").map(Number).filter((id) => !isNaN(id));
+
   const date = new Date();
   try {
     const role: SysRole = {
@@ -76,7 +83,13 @@ export async function createSysRole(prevState: State, formData: FormData) {
       createBy: 1,
     }
 
-    await insertRole(role);
+    const newRole = await insertRole(role);
+
+    // 如果有选中的菜单，插入角色-菜单关联
+    if (newRole && newRole.length > 0 && menuIds.length > 0) {
+      const roleId = newRole[0].id;
+      await insertRoleMenus(roleId, menuIds);
+    }
   } catch (e) {
     console.log(e)
     throw error("Create failed.")
@@ -104,6 +117,10 @@ export async function updateSysRole(id: number, prevState: EditState, formData: 
       message: "Missing Fields. Failed to Update.",
     };
   }
+
+  // 获取菜单 ID 列表
+  const menuIds = formData.getAll("menuIds").map(Number).filter((menuId) => !isNaN(menuId));
+
   try {
     const role: SysRole = {
       id: parsedData.data.id,
@@ -113,6 +130,12 @@ export async function updateSysRole(id: number, prevState: EditState, formData: 
       status: parsedData.data.status,
     }
     await updateRole(role);
+
+    // 更新角色-菜单关联：先删除旧的，再插入新的
+    await deleteRoleMenus(id);
+    if (menuIds.length > 0) {
+      await insertRoleMenus(id, menuIds);
+    }
   } catch (e) {
     console.log(e)
     throw error("Update failed.")
@@ -129,4 +152,20 @@ export async function deleteRole(id: number) {
     throw error("Delete failed.");
   }
   revalidatePath("/sys_role");
+}
+
+// ============ Role-Menu Actions ============
+
+/**
+ * 查询指定角色关联的菜单 ID 列表
+ */
+export async function fetchMenuIdsByRoleId(roleId: number): Promise<number[]> {
+  return await findMenuIdsByRoleId(roleId);
+}
+
+/**
+ * 查询所有菜单（用于构建菜单树）
+ */
+export async function fetchAllMenusForTree(): Promise<{ id: number; parentId: number | null; label: string }[]> {
+  return await selectAllMenus();
 }
