@@ -118,3 +118,13 @@ export const sys_menuTable = pgTable("sys_menu", {
   /** role_id */
   role_id: bigint("role_id", { mode: "number" }).notNull()
  });
+
+/** sys_roleMenuTable */
+ export const sys_roleMenuTable = pgTable("sys_role_menu", {
+  /** role_menu_id */
+  id: bigserial({ mode: "number" }).primaryKey(),
+  /** role_id */
+  role_id: bigint("role_id", { mode: "number" }).notNull(),
+  /** menu_id */
+  menu_id: bigint("menu_id", { mode: "number" }).notNull()
+ });

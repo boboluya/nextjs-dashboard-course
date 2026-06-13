@@ -1,7 +1,8 @@
-import { fetchRoleById } from "../../_lib/actions";
+import { fetchRoleById, fetchAllMenusForTree, fetchMenuIdsByRoleId } from "../../_lib/actions";
 import { EditForm } from "../../_components/edit_form";
 import Breadcrumbs from "@/components/custome_ui/breadcrumbs";
 import { notFound } from "next/navigation";
+import { buildTree } from "@/app/lib/tree";
 
 /**
  * 编辑角色页面
@@ -10,12 +11,20 @@ import { notFound } from "next/navigation";
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
   const id = Number(params.id);
-  const roles = await fetchRoleById(id);
+
+  // 并行加载角色数据、菜单树、已选菜单 ID
+  const [roles, menus, selectedMenuIds] = await Promise.all([
+    fetchRoleById(id),
+    fetchAllMenusForTree(),
+    fetchMenuIdsByRoleId(id),
+  ]);
 
   // 角色不存在时显示 404
   if (!roles || roles.length === 0) {
     notFound();
   }
+
+  const treeData = buildTree(menus);
 
   return (
     <div>
@@ -25,7 +34,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
           { label: "Edit Role", href: `/sys_role/${id}/edit`, active: true },
         ]}
       />
-      <EditForm role={roles[0]} />
+      <EditForm role={roles[0]} treeData={treeData} selectedMenuIds={selectedMenuIds} />
     </div>
   );
 }

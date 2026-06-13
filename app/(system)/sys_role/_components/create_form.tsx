@@ -23,8 +23,10 @@ import {
   CheckCircleIcon,
   ArrowPathIcon,
   GlobeAltIcon,
+  QueueListIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { MenuTreeSelect, TreeNode } from "./menu-tree-select";
 
 /** 数据权限范围字典 */
 const dataScopeDicts = [
@@ -44,11 +46,12 @@ const statusDicts = [
 
 /**
  * 创建角色表单
- * 包含名称、标识、数据权限范围、状态字段
+ * 包含名称、标识、数据权限范围、状态、菜单权限字段
  */
-export function CreateForm() {
+export function CreateForm({ treeData }: { treeData: TreeNode[] }) {
   const [dataScopeValue, setDataScopeValue] = useState("1");
   const [statusValue, setStatusValue] = useState("1");
+  const [selectedMenuIds, setSelectedMenuIds] = useState<number[]>([]);
   const initialState: State = { errors: {}, message: null };
   const [state, formAction, isPending] = useActionState(createSysRole, initialState);
 
@@ -175,6 +178,20 @@ export function CreateForm() {
                 </SelectGroup>
               </SelectContent>
             </Select>
+          </div>
+
+          {/* Menu Permissions 字段 - 跨两列 */}
+          <div className="md:col-span-2 space-y-2">
+            <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+              <QueueListIcon className="h-4 w-4 text-gray-500" />
+              Menu Permissions
+            </label>
+            <MenuTreeSelect
+              treeData={treeData}
+              selectedMenuIds={selectedMenuIds}
+              onChange={setSelectedMenuIds}
+              placeholder="Select menus for this role..."
+            />
           </div>
         </div>
 
