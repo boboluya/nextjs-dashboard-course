@@ -92,7 +92,7 @@ export async function insertRole(role: SysRole) {
       update_time: new Date(),
     })
     .returning();
-  console.log("新角色ID:", newRole);
+  console.log("New role ID:", newRole);
   return newRole;
 }
 

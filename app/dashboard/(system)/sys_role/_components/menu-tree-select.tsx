@@ -1,8 +1,8 @@
 "use client";
 
 /**
- * 菜单树形多选组件
- * 支持勾选父节点时自动勾选所有子节点，反之亦然
+ * Menu tree multi-select component
+ * Supports checking a parent node to automatically check all children, and vice versa
  */
 import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -30,7 +30,7 @@ interface MenuTreeSelectProps {
 }
 
 /**
- * 收集节点及其所有子节点的 ID
+ * Collect a node's ID and all its descendant IDs
  */
 function collectDescendantIds(node: TreeNode): number[] {
   const ids = [node.id];
@@ -41,7 +41,7 @@ function collectDescendantIds(node: TreeNode): number[] {
 }
 
 /**
- * 构建 id -> node 的映射
+ * Build an id -> node mapping
  */
 function buildNodeMap(nodes: TreeNode[], map: Map<number, TreeNode> = new Map()): Map<number, TreeNode> {
   for (const node of nodes) {
@@ -54,10 +54,10 @@ function buildNodeMap(nodes: TreeNode[], map: Map<number, TreeNode> = new Map())
 }
 
 /**
- * 获取节点的所有祖先 ID
+ * Get all ancestor IDs of a node
  */
 function getAncestorIds(nodeId: number, nodeMap: Map<number, TreeNode>, nodes: TreeNode[]): number[] {
-  // 构建 childId -> parentId 映射
+  // Build childId -> parentId mapping
   const parentMap = new Map<number, number>();
   const buildParentMap = (treeNodes: TreeNode[], parentId?: number) => {
     for (const node of treeNodes) {
@@ -94,7 +94,7 @@ export function MenuTreeSelect({
   const nodeMap = useMemo(() => buildNodeMap(treeData), [treeData]);
   const selectedSet = useMemo(() => new Set(selectedMenuIds), [selectedMenuIds]);
 
-  // 计算每个节点的显示状态（全选/半选/未选）
+  // Compute the check state for each node (checked/indeterminate/unchecked)
   const nodeCheckState = useMemo(() => {
     const state = new Map<number, "checked" | "indeterminate" | "unchecked">();
 
@@ -138,11 +138,11 @@ export function MenuTreeSelect({
 
     let newSelected: number[];
     if (isCurrentlyChecked) {
-      // 取消选中：移除该节点及所有子节点
+      // Uncheck: remove this node and all descendants
       const removeSet = new Set(descendantIds);
       newSelected = selectedMenuIds.filter((id) => !removeSet.has(id));
     } else {
-      // 选中：添加该节点及所有子节点
+      // Check: add this node and all descendants
       const addSet = new Set(descendantIds);
       newSelected = [...new Set([...selectedMenuIds, ...addSet])];
     }

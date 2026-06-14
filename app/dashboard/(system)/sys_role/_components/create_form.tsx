@@ -1,8 +1,8 @@
 "use client";
 
 /**
- * 创建角色表单组件
- * 使用 useActionState 管理表单状态和验证
+ * Create role form component
+ * Uses useActionState to manage form state and validation
  */
 import {
   Select,
@@ -28,7 +28,7 @@ import {
 import Link from "next/link";
 import { MenuTreeSelect, TreeNode } from "./menu-tree-select";
 
-/** 数据权限范围字典 */
+/** Data scope dictionary */
 const dataScopeDicts = [
   { dictValue: "1", dictLabel: "All data permissions" },
   { dictValue: "2", dictLabel: "Custom data permissions" },
@@ -38,15 +38,15 @@ const dataScopeDicts = [
   { dictValue: "6", dictLabel: "This dept & below or self" },
 ];
 
-/** 状态字典 */
+/** Status dictionary */
 const statusDicts = [
   { dictValue: "1", dictLabel: "Active" },
   { dictValue: "2", dictLabel: "Disabled" },
 ];
 
 /**
- * 创建角色表单
- * 包含名称、标识、数据权限范围、状态、菜单权限字段
+ * Create role form
+ * Includes name, key, data scope, status, and menu permissions fields
  */
 export function CreateForm({ treeData }: { treeData: TreeNode[] }) {
   const [dataScopeValue, setDataScopeValue] = useState("1");
@@ -57,7 +57,7 @@ export function CreateForm({ treeData }: { treeData: TreeNode[] }) {
 
   return (
     <div className="m-6 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
-      {/* 表单头部 */}
+      {/* Form header */}
       <div className="bg-blue-500 p-6">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
@@ -70,10 +70,10 @@ export function CreateForm({ treeData }: { treeData: TreeNode[] }) {
         </div>
       </div>
 
-      {/* 表单内容 */}
+      {/* Form content */}
       <form className="p-6 space-y-6" action={formAction}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Name 字段 */}
+          {/* Name field */}
           <div className="space-y-2">
             <label htmlFor="name-field" className="flex items-center gap-2 text-sm font-semibold text-gray-700">
               <ShieldCheckIcon className="h-4 w-4 text-gray-500" />
@@ -99,7 +99,7 @@ export function CreateForm({ treeData }: { treeData: TreeNode[] }) {
             </div>
           </div>
 
-          {/* Key 字段 */}
+          {/* Key field */}
           <div className="space-y-2">
             <label htmlFor="key-field" className="flex items-center gap-2 text-sm font-semibold text-gray-700">
               <KeyIcon className="h-4 w-4 text-gray-500" />
@@ -125,7 +125,7 @@ export function CreateForm({ treeData }: { treeData: TreeNode[] }) {
             </div>
           </div>
 
-          {/* Data Scope 字段 */}
+          {/* Data Scope field */}
           <div className="space-y-2">
             <label htmlFor="dataScope-field" className="flex items-center gap-2 text-sm font-semibold text-gray-700">
               <GlobeAltIcon className="h-4 w-4 text-gray-500" />
@@ -157,7 +157,7 @@ export function CreateForm({ treeData }: { treeData: TreeNode[] }) {
             </div>
           </div>
 
-          {/* Status 字段 */}
+          {/* Status field */}
           <div className="space-y-2">
             <label htmlFor="status-field" className="flex items-center gap-2 text-sm font-semibold text-gray-700">
               <CheckCircleIcon className="h-4 w-4 text-gray-500" />
@@ -180,7 +180,7 @@ export function CreateForm({ treeData }: { treeData: TreeNode[] }) {
             </Select>
           </div>
 
-          {/* Menu Permissions 字段 - 跨两列 */}
+          {/* Menu Permissions field - spans two columns */}
           <div className="md:col-span-2 space-y-2">
             <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
               <QueueListIcon className="h-4 w-4 text-gray-500" />
@@ -195,7 +195,7 @@ export function CreateForm({ treeData }: { treeData: TreeNode[] }) {
           </div>
         </div>
 
-        {/* 底部按钮区域 */}
+        {/* Bottom button area */}
         <div className="pt-6 border-t border-gray-100">
           <div className="flex items-center justify-between">
             <p className="text-sm text-gray-500">

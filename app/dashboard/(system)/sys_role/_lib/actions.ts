@@ -72,7 +72,7 @@ export async function createSysRole(prevState: State, formData: FormData) {
     };
   }
 
-  // 获取菜单 ID 列表
+  // Get menu ID list
   const menuIds = formData.getAll("menuIds").map(Number).filter((id) => !isNaN(id));
 
   const date = new Date();
@@ -88,7 +88,7 @@ export async function createSysRole(prevState: State, formData: FormData) {
 
     const newRole = await insertRole(role);
 
-    // 如果有选中的菜单，插入角色-菜单关联
+    // If there are selected menus, insert role-menu associations
     if (newRole && newRole.length > 0 && menuIds.length > 0) {
       const roleId = newRole[0].id;
       await insertRoleMenus(roleId, menuIds);
@@ -123,7 +123,7 @@ export async function updateSysRole(id: number, prevState: EditState, formData: 
     };
   }
 
-  // 获取菜单 ID 列表
+  // Get menu ID list
   const menuIds = formData.getAll("menuIds").map(Number).filter((menuId) => !isNaN(menuId));
 
   try {
@@ -136,7 +136,7 @@ export async function updateSysRole(id: number, prevState: EditState, formData: 
     }
     await updateRole(role);
 
-    // 更新角色-菜单关联：先删除旧的，再插入新的
+    // Update role-menu associations: delete old ones first, then insert new ones
     await deleteRoleMenus(id);
     if (menuIds.length > 0) {
       await insertRoleMenus(id, menuIds);
@@ -164,14 +164,14 @@ export async function deleteRole(id: number) {
 // ============ Role-Menu Actions ============
 
 /**
- * 查询指定角色关联的菜单 ID 列表
+ * Fetch the list of menu IDs associated with a given role
  */
 export async function fetchMenuIdsByRoleId(roleId: number): Promise<number[]> {
   return await findMenuIdsByRoleId(roleId);
 }
 
 /**
- * 查询所有菜单（用于构建菜单树）
+ * Fetch all menus (used for building the menu tree)
  */
 export async function fetchAllMenusForTree(): Promise<{ id: number; parentId: number | null; label: string }[]> {
   return await selectAllMenus();

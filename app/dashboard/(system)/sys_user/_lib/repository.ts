@@ -119,7 +119,6 @@ export async function insertUser(user: SysUser) {
     phonenumber: user.phoneNumber ?? null,
     sex: user.sex ?? "0",
   }).returning();
-  console.log("新用户ID:", newUser);
   return newUser;
 }
 

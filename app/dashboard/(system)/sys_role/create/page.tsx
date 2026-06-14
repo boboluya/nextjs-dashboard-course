@@ -4,11 +4,11 @@ import { fetchAllMenusForTree } from "../_lib/actions";
 import { buildTree } from "@/app/lib/tree";
 
 /**
- * 创建角色页面
- * 服务端组件，渲染面包屑和创建表单
+ * Create role page
+ * Server component that renders breadcrumbs and create form
  */
 export default async function Page() {
-  // 获取所有菜单并构建树形结构
+  // Fetch all menus and build tree structure
   const menus = await fetchAllMenusForTree();
   const treeData = buildTree(menus);
 

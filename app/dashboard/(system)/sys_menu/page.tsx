@@ -1,22 +1,10 @@
-import { searchPages, searchTotal } from "./_lib/actions";
-import Search from "./_components/search";
-import { PageParams } from "./_lib/type";
-import PaginationSysMenu from "./_components/pagination";
-import { DataTable } from "./_components/data-table";
+import { fetchAllMenus } from "./_lib/actions";
+import { TreeTable } from "./_components/tree-table";
 import { CreateMenuButton } from "./_components/action-buttons";
-import { FolderIcon } from "@heroicons/react/24/outline";
 import Breadcrumbs from "@/components/custome_ui/breadcrumbs";
 
-export default async function SysMenuPage(props: {
-  searchParams: Promise<PageParams>;
-}) {
-  const queryParams = await props.searchParams;
-  queryParams.pageNum = queryParams.pageNum ? Number(queryParams.pageNum) : 1;
-  queryParams.pageSize = queryParams.pageSize
-    ? Number(queryParams.pageSize)
-    : 10;
-  const data = await searchPages({ ...queryParams });
-  const totalPages = await searchTotal({ ...queryParams });
+export default async function SysMenuPage() {
+  const allMenus = await fetchAllMenus();
 
   return (
     <div className="w-full">
@@ -32,23 +20,9 @@ export default async function SysMenuPage(props: {
         </div>
       </div>
 
-      {/* Search Section */}
-      <div className="">
-        <Search />
-      </div>
-
-      {/* Table */}
+      {/* Tree Table */}
       <div className="mt-6">
-        <DataTable data={data} />
-      </div>
-
-      {/* Pagination */}
-      <div className="mt-6 flex w-full justify-center">
-        <PaginationSysMenu
-          pageNum={queryParams.pageNum}
-          pageSize={queryParams.pageSize}
-          totalPages={totalPages}
-        />
+        <TreeTable data={allMenus} />
       </div>
     </div>
   );
