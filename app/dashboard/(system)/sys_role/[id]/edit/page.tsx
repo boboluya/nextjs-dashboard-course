@@ -3,12 +3,15 @@ import { EditForm } from "../../_components/edit_form";
 import Breadcrumbs from "@/components/custome_ui/breadcrumbs";
 import { notFound } from "next/navigation";
 import { buildTree } from "@/app/lib/tree";
+import { hasPermission } from "@/lib/permission";
 
 /**
  * Edit role page
  * Loads role data by ID and passes it to the edit form component
  */
 export default async function Page(props: { params: Promise<{ id: string }> }) {
+  await hasPermission("system:sys_role:edit");
+
   const params = await props.params;
   const id = Number(params.id);
 

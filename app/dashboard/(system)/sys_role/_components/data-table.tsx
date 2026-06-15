@@ -12,6 +12,7 @@ import {
 import { EditRoleButton, DeleteRoleButton } from "./action-buttons";
 import { StatusTag } from "@/components/custome_ui/tag";
 import { ShieldCheckIcon } from "@heroicons/react/24/outline";
+import { HasPermi } from "@/components/has-permi";
 
 const dataScopeMap: Record<number, string> = {
   1: "All data",
@@ -22,7 +23,13 @@ const dataScopeMap: Record<number, string> = {
   6: "This dept & below or self",
 };
 
-export function DataTable({ data }: { data: SysRole[] }) {
+export function DataTable({
+  session,
+  data,
+}: {
+  session: any;
+  data: SysRole[];
+}) {
   if (!data || data.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-gray-300 bg-white p-12 text-center">
@@ -95,8 +102,12 @@ export function DataTable({ data }: { data: SysRole[] }) {
                   </TableCell>
                   <TableCell className="pr-6">
                     <div className="flex justify-end gap-2">
-                      <EditRoleButton id={row.id!} />
-                      <DeleteRoleButton id={row.id!} />
+                      <HasPermi session={session} permission="system:sys_role:edit">
+                        <EditRoleButton id={row.id!} />
+                      </HasPermi>
+                      <HasPermi session={session} permission="system:sys_role:delete">
+                        <DeleteRoleButton id={row.id!} />
+                      </HasPermi>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -138,8 +149,12 @@ export function DataTable({ data }: { data: SysRole[] }) {
               </div>
 
               <div className="mt-4 flex justify-end gap-2 border-t border-gray-100 pt-3">
-                <EditRoleButton id={row.id!} />
-                <DeleteRoleButton id={row.id!} />
+                <HasPermi session={session} permission="system:sys_role:edit">
+                  <EditRoleButton id={row.id!} />
+                </HasPermi>
+                <HasPermi session={session} permission="system:sys_role:delete">
+                  <DeleteRoleButton id={row.id!} />
+                </HasPermi>
               </div>
             </div>
           ))}

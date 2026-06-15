@@ -2,8 +2,11 @@ import { fetchUserById, fetchAllRoles, fetchRolesByUserId } from "../../_lib/act
 import { EditForm } from "../../_components/edit_form";
 import Breadcrumbs from "@/components/custome_ui/breadcrumbs";
 import { notFound } from "next/navigation";
+import { hasPermission } from "@/lib/permission";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
+  await hasPermission("system:sys_user:edit");
+
   const params = await props.params;
   const id = Number(params.id);
   const [users, roles, selectedRoleIds] = await Promise.all([

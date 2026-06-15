@@ -20,6 +20,7 @@ import {
   ChevronRightIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/outline";
+import { HasPermi } from "@/components/has-permi";
 
 // ── tree node type (self-contained, carries full SysMenu data) ──
 
@@ -90,7 +91,7 @@ function collectAllIds(nodes: TreeNode[]): number[] {
 
 // ── component ────────────────────────────────────────────
 
-export function TreeTable({ data }: { data: SysMenu[] }) {
+export function TreeTable({ session, data }: { session: any; data: SysMenu[] }) {
   const tree = useMemo(() => buildDataTree(data), [data]);
   const allExpandableIds = useMemo(() => collectAllIds(tree), [tree]);
 
@@ -264,8 +265,12 @@ export function TreeTable({ data }: { data: SysMenu[] }) {
                     </TableCell>
                     <TableCell className="pr-6">
                       <div className="flex justify-end gap-2">
-                        <EditMenuButton id={menu.id!} />
-                        <DeleteMenuButton id={menu.id!} />
+                        <HasPermi session={session} permission="system:sys_menu:edit">
+                          <EditMenuButton id={menu.id!} />
+                        </HasPermi>
+                        <HasPermi session={session} permission="system:sys_menu:delete">
+                          <DeleteMenuButton id={menu.id!} />
+                        </HasPermi>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -343,8 +348,12 @@ export function TreeTable({ data }: { data: SysMenu[] }) {
                 </div>
 
                 <div className="mt-4 flex justify-end gap-2 border-t border-gray-100 pt-3">
-                  <EditMenuButton id={menu.id!} />
-                  <DeleteMenuButton id={menu.id!} />
+                  <HasPermi session={session} permission="system:sys_menu:edit">
+                    <EditMenuButton id={menu.id!} />
+                  </HasPermi>
+                  <HasPermi session={session} permission="system:sys_menu:delete">
+                    <DeleteMenuButton id={menu.id!} />
+                  </HasPermi>
                 </div>
               </div>
             );

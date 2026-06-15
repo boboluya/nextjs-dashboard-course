@@ -2,8 +2,13 @@ import { fetchAllMenus } from "./_lib/actions";
 import { TreeTable } from "./_components/tree-table";
 import { CreateMenuButton } from "./_components/action-buttons";
 import Breadcrumbs from "@/components/custome_ui/breadcrumbs";
+import { hasPermission } from "@/lib/permission";
+import { HasPermi } from "@/components/has-permi";
+import { auth } from "@/auth";
 
 export default async function SysMenuPage() {
+  await hasPermission("system:sys_menu:list");
+  const session = await auth();
   const allMenus = await fetchAllMenus();
 
   return (
@@ -16,13 +21,15 @@ export default async function SysMenuPage() {
           />
         </div>
         <div className="mr-5">
-          <CreateMenuButton />
+          <HasPermi session={session} permission="system:sys_menu:add">
+            <CreateMenuButton />
+          </HasPermi>
         </div>
       </div>
 
       {/* Tree Table */}
       <div className="mt-6">
-        <TreeTable data={allMenus} />
+        <TreeTable session={session} data={allMenus} />
       </div>
     </div>
   );

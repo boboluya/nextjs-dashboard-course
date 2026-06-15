@@ -6,11 +6,14 @@ import { DataTable } from "./_components/data-table";
 import { CreateRoleButton } from "./_components/action-buttons";
 import Breadcrumbs from "@/components/custome_ui/breadcrumbs";
 import { hasPermission } from "@/lib/permission";
+import { HasPermi } from "@/components/has-permi";
+import { auth } from "@/auth";
 
 export default async function SysRolePage(props: {
   searchParams: Promise<PageParams>;
 }) {
-  await hasPermission("system:system_role:list");
+  await hasPermission("system:sys_role:list");
+  const session = await auth();
 
   const queryParams = await props.searchParams;
   queryParams.pageNum = queryParams.pageNum ? Number(queryParams.pageNum) : 1;
@@ -30,7 +33,9 @@ export default async function SysRolePage(props: {
           />
         </div>
         <div className="mr-5">
-          <CreateRoleButton />
+          <HasPermi session={session} permission="system:sys_role:add">
+            <CreateRoleButton />
+          </HasPermi>
         </div>
       </div>
 
@@ -41,7 +46,7 @@ export default async function SysRolePage(props: {
 
       {/* Table */}
       <div className="mt-6">
-        <DataTable data={data} />
+        <DataTable session={session} data={data}/>
       </div>
 
       {/* Pagination */}

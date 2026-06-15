@@ -6,10 +6,16 @@ import { DataTable } from "./_components/data-table";
 import { CreateUserButton } from "./_components/action-buttons";
 import { UsersIcon } from "@heroicons/react/24/outline";
 import Breadcrumbs from "@/components/custome_ui/breadcrumbs";
+import { hasPermission } from "@/lib/permission";
+import { HasPermi } from "@/components/has-permi";
+import { auth } from "@/auth";
 
 export default async function SysUserPage(props: {
   searchParams: Promise<PageParams>;
 }) {
+  await hasPermission("system:sys_user:list");
+  const session = await auth();
+
   const queryParams = await props.searchParams;
   queryParams.pageNum = queryParams.pageNum ? Number(queryParams.pageNum) : 1;
   queryParams.pageSize = queryParams.pageSize
@@ -36,7 +42,9 @@ export default async function SysUserPage(props: {
           />
         </div>
         <div className="mr-5">
-          <CreateUserButton />
+          <HasPermi session={session} permission="system:sys_user:add">
+            <CreateUserButton />
+          </HasPermi>
         </div>
       </div>
 
@@ -47,7 +55,7 @@ export default async function SysUserPage(props: {
 
       {/* Table */}
       <div className="mt-6">
-        <DataTable data={enrichedData} />
+        <DataTable session={session} data={enrichedData} />
       </div>
 
       {/* Pagination */}

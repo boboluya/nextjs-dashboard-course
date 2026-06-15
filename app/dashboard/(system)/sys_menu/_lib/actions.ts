@@ -6,6 +6,7 @@ import z from "zod";
 import { error } from "console";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { hasApiPermission } from "@/lib/permission";
 
 const FormSchema = z.object(
   {
@@ -68,6 +69,8 @@ export async function searchTotal(sysMenu: SysMenu): Promise<number> {
 }
 
 export async function createSysMenu(prevState: State, formData: FormData) {
+  await hasApiPermission("system:sys_menu:add");
+
   const parsedData = CreateForm.safeParse({
     name: formData.get("name"),
     label: formData.get("label"),
@@ -121,6 +124,8 @@ export async function fetchAllMenus(): Promise<SysMenu[]> {
 }
 
 export async function updateSysMenu(id: number, prevState: EditState, formData: FormData): Promise<EditState> {
+  await hasApiPermission("system:sys_menu:edit");
+
   const parsedData = EditForm.safeParse({
     id: id,
     name: formData.get("name"),
@@ -163,6 +168,8 @@ export async function updateSysMenu(id: number, prevState: EditState, formData: 
 }
 
 export async function deleteMenu(id: number) {
+  await hasApiPermission("system:sys_menu:delete");
+
   try {
     await softDeleteMenu(id);
   } catch (e) {

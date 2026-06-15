@@ -56,7 +56,7 @@ export async function searchTotal(sysRole: SysRole): Promise<number> {
 }
 
 export async function createSysRole(prevState: State, formData: FormData) {
-  await hasApiPermission("system:system_role:add");
+  await hasApiPermission("system:sys_role:add");
 
   const parsedData = CreateForm.safeParse({
     name: formData.get("name"),
@@ -106,7 +106,7 @@ export async function fetchRoleById(id: number): Promise<SysRole[]> {
 }
 
 export async function updateSysRole(id: number, prevState: EditState, formData: FormData): Promise<EditState> {
-  await hasApiPermission("system:system_role:edit");
+  await hasApiPermission("system:sys_role:edit");
 
   const parsedData = EditForm.safeParse({
     id: id,
@@ -150,7 +150,7 @@ export async function updateSysRole(id: number, prevState: EditState, formData: 
 }
 
 export async function deleteRole(id: number) {
-  await hasApiPermission("system:system_role:delete");
+  await hasApiPermission("system:sys_role:delete");
 
   try {
     await softDeleteRole(id);

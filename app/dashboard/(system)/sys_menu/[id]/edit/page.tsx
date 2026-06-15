@@ -3,6 +3,7 @@ import { EditForm } from "../../_components/edit_form";
 import { buildTree } from "@/app/lib/tree";
 import Breadcrumbs from "@/components/custome_ui/breadcrumbs";
 import { notFound } from "next/navigation";
+import { hasPermission } from "@/lib/permission";
 
 /** Collect the given node and all its descendant IDs from a flat list. */
 function collectDescendantIds(
@@ -29,6 +30,8 @@ function collectDescendantIds(
 }
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
+  await hasPermission("system:sys_menu:edit");
+
   const params = await props.params;
   const id = Number(params.id);
   const menus = await fetchMenuById(id);

@@ -81,7 +81,7 @@ async function getUserPermissions(userId: number): Promise<string[]> {
       and(
         inArray(sys_menuTable.id, menuIds),
         or(isNull(sys_menuTable.del_flag), eq(sys_menuTable.del_flag, "0")),
-        eq(sys_menuTable.status, 1),
+        eq(sys_menuTable.status, 0),
       ),
     );
 
@@ -116,7 +116,6 @@ export const { auth, signIn, signOut } = NextAuth({
   ],
   callbacks: {
     async jwt({ token, user, trigger }) {
-      console.log("aaa")
       // On initial sign-in, cache userId + roles + permissions in the token
       if (user) {
         const userId = Number(user.id);
@@ -124,14 +123,12 @@ export const { auth, signIn, signOut } = NextAuth({
         token.roles = await getUserRoles(userId);
         token.permissions = await getUserPermissions(userId);
       }
-      console.log("aaa")
 
       // On session update (e.g. after role changes), refresh from DB
       if (trigger === "update" && token.userId) {
         token.roles = await getUserRoles(token.userId as number);
         token.permissions = await getUserPermissions(token.userId as number);
       }
-      console.log("bbb")
 
       return token;
     },

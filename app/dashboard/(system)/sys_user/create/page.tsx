@@ -1,8 +1,10 @@
 import { CreateForm } from "../_components/create_form";
 import { fetchAllRoles } from "../_lib/actions";
 import Breadcrumbs from "@/components/custome_ui/breadcrumbs";
+import { hasPermission } from "@/lib/permission";
 
 export default async function Page() {
+  await hasPermission("system:sys_user:add");
   const roles = await fetchAllRoles();
   return (
     <div>

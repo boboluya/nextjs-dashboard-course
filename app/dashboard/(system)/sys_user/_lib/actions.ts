@@ -8,6 +8,7 @@ import bcrypt from "bcrypt";
 import { error } from "console";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { hasApiPermission } from "@/lib/permission";
 
 const FormSchema = z.object(
   {
@@ -59,6 +60,8 @@ export async function searchTotal(sysUser: SysUser): Promise<number> {
 }
 
 export async function createSysUser(prevState: State, formData: FormData) {
+  await hasApiPermission("system:sys_user:add");
+
   const parsedData = CreateForm.safeParse({
     userName: formData.get("userName"),
     nickName: formData.get("nickName"),
@@ -121,6 +124,8 @@ export async function fetchRoleNamesByUserIds(
 }
 
 export async function updateSysUser(userId: number, prevState: EditState, formData: FormData): Promise<EditState> {
+  await hasApiPermission("system:sys_user:edit");
+
   const parsedData = EditForm.safeParse({
     userId: userId,
     userName: formData.get("userName"),
@@ -161,6 +166,8 @@ export async function updateSysUser(userId: number, prevState: EditState, formDa
 }
 
 export async function deleteUser(userId: number) {
+  await hasApiPermission("system:sys_user:delete");
+
   try {
     await softDeleteUser(userId);
   } catch (e) {
@@ -182,6 +189,8 @@ const ResetPasswordSchema = z.object({
 });
 
 export async function resetPassword(userId: number, prevState: ResetPasswordState, formData: FormData): Promise<ResetPasswordState> {
+  await hasApiPermission("system:sys_user:resetpwd");
+
   const parsedData = ResetPasswordSchema.safeParse({
     password: formData.get("password"),
   });

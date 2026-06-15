@@ -14,7 +14,7 @@ export class NoPermissionError extends Error {
  *
  * Usage in server component:
  *   import { hasPermission } from "@/lib/permission";
- *   await hasPermission("system:system_role:list");
+ *   await hasPermission("system:sys_role:list");
  */
 export async function hasPermission(permission: string): Promise<void> {
   const session = await auth();
@@ -39,7 +39,7 @@ export async function hasPermission(permission: string): Promise<void> {
  *
  * Usage in server action:
  *   import { hasApiPermission } from "@/lib/permission";
- *   await hasApiPermission("system:system_role:add");
+ *   await hasApiPermission("system:sys_role:add");
  */
 export async function hasApiPermission(permission: string): Promise<void> {
   const session = await auth();

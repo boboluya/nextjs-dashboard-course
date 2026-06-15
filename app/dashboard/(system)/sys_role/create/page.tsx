@@ -2,12 +2,15 @@ import { CreateForm } from "../_components/create_form";
 import Breadcrumbs from "@/components/custome_ui/breadcrumbs";
 import { fetchAllMenusForTree } from "../_lib/actions";
 import { buildTree } from "@/app/lib/tree";
+import { hasPermission } from "@/lib/permission";
 
 /**
  * Create role page
  * Server component that renders breadcrumbs and create form
  */
 export default async function Page() {
+  await hasPermission("system:sys_role:add");
+
   // Fetch all menus and build tree structure
   const menus = await fetchAllMenusForTree();
   const treeData = buildTree(menus);
@@ -17,7 +20,11 @@ export default async function Page() {
       <Breadcrumbs
         breadcrumbs={[
           { label: "Roles", href: "/dashboard/sys_role" },
-          { label: "Create Role", href: "/dashboard/sys_role/create", active: true },
+          {
+            label: "Create Role",
+            href: "/dashboard/sys_role/create",
+            active: true,
+          },
         ]}
       />
       <CreateForm treeData={treeData} />

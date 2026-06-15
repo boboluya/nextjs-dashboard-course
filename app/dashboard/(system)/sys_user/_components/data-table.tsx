@@ -17,8 +17,9 @@ import {
   EnvelopeIcon,
   PhoneIcon,
 } from "@heroicons/react/24/outline";
+import { HasPermi } from "@/components/has-permi";
 
-export function DataTable({ data }: { data: SysUser[] }) {
+export function DataTable({ session, data }: { session: any; data: SysUser[] }) {
   if (!data || data.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-gray-300 bg-white p-12 text-center">
@@ -127,9 +128,15 @@ export function DataTable({ data }: { data: SysUser[] }) {
                   </TableCell>
                   <TableCell className="pr-6">
                     <div className="flex justify-end gap-2">
-                      <EditUserButton id={row.userId!} />
-                      <ResetPasswordButton userId={row.userId!} />
-                      <DeleteUserButton id={row.userId!} />
+                      <HasPermi session={session} permission="system:sys_user:edit">
+                        <EditUserButton id={row.userId!} />
+                      </HasPermi>
+                      <HasPermi session={session} permission="system:sys_user:resetpwd">
+                        <ResetPasswordButton userId={row.userId!} />
+                      </HasPermi>
+                      <HasPermi session={session} permission="system:sys_user:delete">
+                        <DeleteUserButton id={row.userId!} />
+                      </HasPermi>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -195,9 +202,13 @@ export function DataTable({ data }: { data: SysUser[] }) {
               </div>
 
               <div className="mt-4 flex justify-end gap-2 border-t border-gray-100 pt-3">
-                <EditUserButton id={row.userId!} />
+                <HasPermi session={session} permission="system:sys_user:edit">
+                  <EditUserButton id={row.userId!} />
+                </HasPermi>
                 <ResetPasswordButton userId={row.userId!} />
-                <DeleteUserButton id={row.userId!} />
+                <HasPermi session={session} permission="system:sys_user:delete">
+                  <DeleteUserButton id={row.userId!} />
+                </HasPermi>
               </div>
             </div>
           ))}

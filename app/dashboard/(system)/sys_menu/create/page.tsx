@@ -2,8 +2,10 @@ import { CreateForm } from "../_components/create_form";
 import { fetchAllMenus } from "../_lib/actions";
 import { buildTree } from "@/app/lib/tree";
 import Breadcrumbs from "@/components/custome_ui/breadcrumbs";
+import { hasPermission } from "@/lib/permission";
 
 export default async function Page() {
+  await hasPermission("system:sys_menu:add");
   const menus = await fetchAllMenus();
   const treeData = buildTree(
     menus.map((m) => ({ id: m.id!, parentId: m.parentId, label: m.name! })),
