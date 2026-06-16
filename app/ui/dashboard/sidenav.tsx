@@ -12,15 +12,16 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarRail,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 
 export default function SideNav() {
   return (
     <>
-      <SidebarHeader>
-        <Link href="/">
-          <div className="flex items-center gap-2 rounded-md bg-blue-600 px-3 py-2">
-            <GlobeAltIcon className="h-6 w-6 rotate-[15deg] text-white" />
+      <SidebarHeader className="flex">
+        <Link href="/dashboard">
+          <div className="flex items-center gap-2 rounded-md bg-blue-600 px-1 py-2">
+            <GlobeAltIcon className="h-6 w-6 shrink-0 rotate-15 text-white" />
             <span
               className={`${lusitana.className} text-lg text-white group-data-[collapsible=icon]:hidden`}
             >
@@ -28,6 +29,7 @@ export default function SideNav() {
             </span>
           </div>
         </Link>
+        <SidebarTrigger className="cursor-pointer" />
       </SidebarHeader>
       <SidebarContent>
         <NavLinks />

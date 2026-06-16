@@ -1,7 +1,7 @@
 "use client";
 
 import SideNav from "@/app/ui/dashboard/sidenav";
-import { SidebarProvider, Sidebar, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider, Sidebar, SidebarInset } from "@/components/ui/sidebar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -10,10 +10,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <SideNav />
       </Sidebar>
       <SidebarInset>
-        <header className="flex h-12 items-center bg-white px-4">
-          <SidebarTrigger />
-        </header>
-        <div className="flex-1 px-6">{children}</div>
+        <div className="flex-1 px-6 py-3">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );
