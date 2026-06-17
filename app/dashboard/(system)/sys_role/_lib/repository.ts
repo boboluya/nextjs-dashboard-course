@@ -97,16 +97,18 @@ export async function insertRole(role: SysRole) {
 }
 
 export async function updateRole(role: SysRole) {
+  const updateData: Record<string, unknown> = {
+    update_by: role.updateBy ?? 1,
+    update_time: new Date(),
+  };
+  if (role.name !== undefined) updateData.name = role.name;
+  if (role.key !== undefined) updateData.key = role.key;
+  if (role.dataScope !== undefined) updateData.data_scope = role.dataScope;
+  if (role.status !== undefined) updateData.status = role.status;
+
   await db
     .update(sys_roleTable)
-    .set({
-      name: role.name ?? "",
-      key: role.key ?? "",
-      data_scope: role.dataScope ?? 1,
-      status: role.status ?? 1,
-      update_by: role.updateBy ?? 1,
-      update_time: new Date(),
-    })
+    .set(updateData)
     .where(eq(sys_roleTable.id, role.id!));
 }
 

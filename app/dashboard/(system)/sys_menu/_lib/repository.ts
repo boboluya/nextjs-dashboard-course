@@ -103,21 +103,23 @@ export async function insertMenu(menu: SysMenu) {
 }
 
 export async function updateMenu(menu: SysMenu) {
+  const updateData: Record<string, unknown> = {
+    update_by: menu.updateBy ?? 1,
+    update_time: new Date(),
+  };
+  if (menu.path !== undefined) updateData.path = menu.path;
+  if (menu.type !== undefined) updateData.type = menu.type;
+  if (menu.parentId !== undefined) updateData.parent_id = menu.parentId;
+  if (menu.sorting !== undefined) updateData.sorting = menu.sorting;
+  if (menu.name !== undefined) updateData.name = menu.name;
+  if (menu.label !== undefined) updateData.label = menu.label;
+  if (menu.perms !== undefined) updateData.perms = menu.perms;
+  if (menu.status !== undefined) updateData.status = menu.status;
+  if (menu.hiding !== undefined) updateData.hiding = menu.hiding;
+
   await db
     .update(sys_menuTable)
-    .set({
-      path: menu.path ?? "",
-      type: menu.type ?? "M",
-      parent_id: menu.parentId ?? null,
-      sorting: menu.sorting ?? 0,
-      name: menu.name ?? "",
-      label: menu.label ?? "",
-      perms: menu.perms ?? null,
-      status: menu.status ?? 0,
-      hiding: menu.hiding ?? 0,
-      update_by: menu.updateBy ?? 1,
-      update_time: new Date(),
-    })
+    .set(updateData)
     .where(eq(sys_menuTable.id, menu.id!));
 }
 

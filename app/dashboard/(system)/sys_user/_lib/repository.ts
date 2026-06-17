@@ -123,18 +123,21 @@ export async function insertUser(user: SysUser) {
 }
 
 export async function updateUser(user: SysUser) {
+  // Only include fields that are actually provided (not undefined)
+  const updateData: Record<string, unknown> = {
+    update_by: 1,
+    update_time: new Date(),
+  };
+  if (user.userName !== undefined) updateData.user_name = user.userName;
+  if (user.nickName !== undefined) updateData.nick_name = user.nickName;
+  if (user.password !== undefined) updateData.password = user.password;
+  if (user.email !== undefined) updateData.email = user.email;
+  if (user.phoneNumber !== undefined) updateData.phonenumber = user.phoneNumber;
+  if (user.sex !== undefined) updateData.sex = user.sex;
+
   await db
     .update(sys_usersTable)
-    .set({
-      user_name: user.userName ?? "",
-      nick_name: user.nickName ?? "",
-      password: user.password ?? "",
-      email: user.email ?? null,
-      phonenumber: user.phoneNumber ?? null,
-      sex: user.sex ?? "0",
-      update_by: 1,
-      update_time: new Date(),
-    })
+    .set(updateData)
     .where(eq(sys_usersTable.user_id, user.userId!));
 }
 
