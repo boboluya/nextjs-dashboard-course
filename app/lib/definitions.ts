@@ -133,6 +133,8 @@ export type SysMenuTree = {
   id?: number;
   name?: string;
   label?: string;
+  type?: string;
+  path?: string;
   perms?: string | null;
   sorting?: number;
   status?: number;

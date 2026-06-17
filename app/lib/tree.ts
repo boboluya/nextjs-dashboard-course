@@ -12,8 +12,11 @@ export interface TreeNode {
 /**
  * Build a tree from a flat list of items.
  *
+ * All properties from the original items are preserved on each node,
+ * plus a `children` array for nesting.
+ *
  * @param items - flat array, each item must have `id`, `parentId`, `label`
- * @returns array of root TreeNode (parentId is null/undefined/0)
+ * @returns array of root items (parentId is null/undefined/0) with `children` attached
  *
  * @example
  * const tree = buildTree([
@@ -27,17 +30,16 @@ export interface TreeNode {
  * //      { id: 3, label: "Menu Management", children: [] },
  * //    ] }]
  */
-export function buildTree(
-  items: { id: number; parentId?: number | null; label: string }[],
-): TreeNode[] {
-  const nodeMap = new Map<number, TreeNode>();
-  const roots: TreeNode[] = [];
+export function buildTree<T extends { id: number; parentId?: number | null; label: string }>(
+  items: T[],
+): (T & { children: (T & { children: any[] })[] })[] {
+  const nodeMap = new Map<number, T & { children: any[] }>();
+  const roots: (T & { children: any[] })[] = [];
 
-  // First pass: create all nodes
+  // First pass: create all nodes (preserving all original properties)
   for (const item of items) {
     nodeMap.set(item.id, {
-      id: item.id,
-      label: item.label,
+      ...item,
       children: [],
     });
   }
