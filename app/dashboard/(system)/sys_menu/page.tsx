@@ -1,4 +1,4 @@
-import { fetchAllMenus } from "./_lib/actions";
+import { fetchAllMenus, fetchAllMenusTree } from "./_lib/actions";
 import { TreeTable } from "./_components/tree-table";
 import { CreateMenuButton } from "./_components/action-buttons";
 import Breadcrumbs from "@/components/custome_ui/breadcrumbs";
@@ -10,6 +10,7 @@ export default async function SysMenuPage() {
   await hasPermission("system:sys_menu:list");
   const session = await auth();
   const allMenus = await fetchAllMenus();
+  const allMenusTree = await fetchAllMenusTree();
 
   return (
     <div className="w-full">

@@ -129,6 +129,17 @@ export type SysMenu = {
   delFlag?: string | null;
 };
 
+export type SysMenuTree = {
+  id?: number;
+  name?: string;
+  label?: string;
+  perms?: string | null;
+  sorting?: number;
+  status?: number;
+  hiding?: number;
+  children?: SysMenuTree[];
+};
+
 export type SysRole = {
   id?: number;
   name?: string;
