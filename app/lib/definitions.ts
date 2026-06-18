@@ -141,7 +141,7 @@ export type SysMenuTree = {
   status?: number;
   hiding?: number;
   children?: SysMenuTree[];
-  icon?: string|undefined;
+  icon?: string | null;
 };
 
 export type SysRole = {
