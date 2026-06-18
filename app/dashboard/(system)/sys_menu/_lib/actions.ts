@@ -36,6 +36,7 @@ const FormSchema = z.object({
   parentId: z.coerce.number().nullable().optional(),
   sorting: z.coerce.number().min(0, { message: "Sorting must be >= 0" }),
   perms: z.string().max(255).optional().nullable(),
+  icon: z.string().max(100).optional().nullable(),
   status: z.coerce.number().min(0).max(1),
   hiding: z.coerce.number().min(0).max(1),
 });
@@ -49,6 +50,7 @@ export type State = {
     parentId?: string[];
     sorting?: string[];
     perms?: string[];
+    icon?: string[];
     status?: string[];
     hiding?: string[];
   };
@@ -65,6 +67,7 @@ export type EditState = {
     parentId?: string[];
     sorting?: string[];
     perms?: string[];
+    icon?: string[];
     status?: string[];
     hiding?: string[];
   };
@@ -93,6 +96,7 @@ export async function createSysMenu(prevState: State, formData: FormData) {
     parentId: formData.get("parentId") || null,
     sorting: formData.get("sorting"),
     perms: formData.get("perms") || null,
+    icon: formData.get("icon") || null,
     status: formData.get("status"),
     hiding: formData.get("hiding"),
   });
@@ -113,6 +117,7 @@ export async function createSysMenu(prevState: State, formData: FormData) {
       parentId: parsedData.data.parentId ?? null,
       sorting: parsedData.data.sorting,
       perms: parsedData.data.perms ?? null,
+      icon: parsedData.data.icon ?? null,
       status: parsedData.data.status,
       hiding: parsedData.data.hiding,
       createTime: date,
@@ -214,6 +219,7 @@ export async function updateSysMenu(
     parentId: formData.get("parentId") || null,
     sorting: formData.get("sorting"),
     perms: formData.get("perms") || null,
+    icon: formData.get("icon") || null,
     status: formData.get("status"),
     hiding: formData.get("hiding"),
   });
@@ -234,6 +240,7 @@ export async function updateSysMenu(
       parentId: parsedData.data.parentId ?? null,
       sorting: parsedData.data.sorting,
       perms: parsedData.data.perms ?? null,
+      icon: parsedData.data.icon ?? null,
       status: parsedData.data.status,
       hiding: parsedData.data.hiding,
     };

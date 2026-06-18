@@ -120,6 +120,7 @@ export type SysMenu = {
   name?: string;
   label?: string;
   perms?: string | null;
+  icon?: string | null;
   status?: number;
   hiding?: number;
   createTime?: Date;
@@ -140,6 +141,7 @@ export type SysMenuTree = {
   status?: number;
   hiding?: number;
   children?: SysMenuTree[];
+  icon?: string|undefined;
 };
 
 export type SysRole = {

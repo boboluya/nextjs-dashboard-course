@@ -56,6 +56,8 @@ export const sys_menuTable = pgTable("sys_menu", {
   label: varchar({ length: 255 }).notNull(),
   /** perms */
   perms: varchar({ length: 255 }),
+  /** icon */
+  icon: varchar({ length: 100 }),
   /** status */
   status: integer().notNull(),
   /** hiding */

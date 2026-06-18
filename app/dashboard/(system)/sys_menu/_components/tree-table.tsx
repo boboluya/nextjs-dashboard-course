@@ -179,6 +179,9 @@ export function TreeTable({ session, data }: { session: any; data: SysMenu[] }) 
                   Permission
                 </TableHead>
                 <TableHead className="font-semibold text-gray-700">
+                  Icon
+                </TableHead>
+                <TableHead className="font-semibold text-gray-700">
                   Sorting
                 </TableHead>
                 <TableHead className="font-semibold text-gray-700">
@@ -252,6 +255,11 @@ export function TreeTable({ session, data }: { session: any; data: SysMenu[] }) 
                     <TableCell>
                       <span className="font-mono text-sm text-gray-600">
                         {menu.perms || "—"}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm text-gray-600">
+                        {menu.icon || "—"}
                       </span>
                     </TableCell>
                     <TableCell className="text-gray-600">
@@ -337,6 +345,12 @@ export function TreeTable({ session, data }: { session: any; data: SysMenu[] }) 
                     <div className="flex items-center gap-2 text-sm text-gray-600">
                       <span className="font-medium">Perms:</span>
                       <span className="font-mono">{menu.perms}</span>
+                    </div>
+                  )}
+                  {menu.icon && (
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <span className="font-medium">Icon:</span>
+                      <span>{menu.icon}</span>
                     </div>
                   )}
                   <div className="flex items-center gap-2">

@@ -38,7 +38,7 @@ export default function SideNav() {
         <SidebarMenu>
           <SidebarMenuItem>
             <form action={signOut}>
-              <SidebarMenuButton asChild>
+              <SidebarMenuButton asChild className="cursor-pointer bg-gray-200">
                 <button type="submit" className="w-full">
                   <LogOut className="size-4" />
                   <span>Sign Out</span>

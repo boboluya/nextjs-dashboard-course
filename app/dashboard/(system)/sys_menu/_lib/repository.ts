@@ -15,6 +15,7 @@ function dbMapping(menu: typeof sys_menuTable.$inferSelect): SysMenu {
     name: menu.name ?? undefined,
     label: menu.label ?? undefined,
     perms: menu.perms ?? null,
+    icon: menu.icon ?? null,
     status: menu.status ?? undefined,
     hiding: menu.hiding ?? undefined,
     createTime: menu.create_time ?? undefined,
@@ -92,6 +93,7 @@ export async function insertMenu(menu: SysMenu) {
       name: menu.name ?? "",
       label: menu.label ?? "",
       perms: menu.perms ?? null,
+      icon: menu.icon ?? null,
       status: menu.status ?? 0,
       hiding: menu.hiding ?? 0,
       create_by: menu.createBy ?? 1,
@@ -114,6 +116,7 @@ export async function updateMenu(menu: SysMenu) {
   if (menu.name !== undefined) updateData.name = menu.name;
   if (menu.label !== undefined) updateData.label = menu.label;
   if (menu.perms !== undefined) updateData.perms = menu.perms;
+  if (menu.icon !== undefined) updateData.icon = menu.icon;
   if (menu.status !== undefined) updateData.status = menu.status;
   if (menu.hiding !== undefined) updateData.hiding = menu.hiding;
 
