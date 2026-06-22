@@ -156,3 +156,14 @@ export type SysRole = {
   updateBy?: number;
   delFlag?: string | null;
 };
+
+export type SysDictType = {
+  id?: number;
+  dictName?: string;
+  dictType?: string;
+  createBy?: number;
+  updateBy?: number;
+  delFlag?: string | null;
+  createTime?: Date;
+  updateTime?: Date;
+};
