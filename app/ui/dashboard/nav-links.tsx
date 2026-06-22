@@ -1,11 +1,4 @@
-import {
-  Home,
-  FileText,
-  Users,
-  UserCog,
-  Folder,
-  ShieldCheck,
-} from "lucide-react";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -15,12 +8,15 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuSkeleton,
 } from "@/components/ui/sidebar";
 import type { SysMenuTree } from "@/app/lib/definitions";
 import { fetchAllMenusTree } from "@/app/dashboard/(system)/sys_menu/_lib/actions";
 import * as LucideIcons from 'lucide-react';
 const getIconComponent = (iconName: string) => {
   if (!iconName) return null;
+
+
 
   // Convert kebab-case to PascalCase (e.g., "arrow-left" -> "ArrowLeft")
   const pascalCase = iconName
@@ -48,15 +44,6 @@ function cleanMenuPath(path: string | null | undefined): string {
   // Remove trailing /page if present
   return withDashboard.replace(/\/page$/, "");
 }
-
-const systemLinks = [
-  { name: "Users", href: "/dashboard/sys_user", icon: UserCog },
-  { name: "Menus", href: "/dashboard/sys_menu", icon: Folder },
-  { name: "Roles", href: "/dashboard/sys_role", icon: ShieldCheck },
-];
-const links = [{ name: "Home", href: "/dashboard", icon: Home }];
-type NavLink = (typeof links)[number];
-// type NavLink2 = (typeof systemLinks)[number];
 
 async function buildLinks(): Promise<SysMenuTree[]> {
   const SysMenuTree = await fetchAllMenusTree();

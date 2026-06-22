@@ -130,3 +130,53 @@ export const sys_menuTable = pgTable("sys_menu", {
   /** menu_id */
   menu_id: bigint("menu_id", { mode: "number" }).notNull()
  });
+
+ /** sys_dict_type */
+ export const sys_dictTypeTable = pgTable("sys_dict_type", {
+  /** dict_type_id */
+  id: bigserial({ mode: "number" }).primaryKey(),
+  /** dict_name */
+  dict_name: varchar({ length: 50 }).notNull(),
+  /** dict_type */
+  dict_type: varchar({ length: 50 }).notNull(),
+  /** create_by */
+  create_by: integer().notNull(),
+  /** update_by */
+  update_by: integer().notNull(),
+  /** del_flag
+   * 0: Not deleted; 1: Deleted
+   */
+  del_flag: varchar({ length: 1 }).default('0'),
+  /** create_time */
+  create_time: timestamp({ withTimezone: true }).notNull(),
+  /** update_time */
+  update_time: timestamp({ withTimezone: true }).notNull(),
+ });
+
+ /** sys_dict_item */
+ export const sys_dictItemTable = pgTable("sys_dict_item", {
+  /** dict_item_id */
+  id: bigserial({ mode: "number" }).primaryKey(),
+  /** dict_type_id */
+  dict_type_id: bigint("dict_type_id", { mode: "number" }).notNull(),
+  /** dict_name */
+  dict_name: varchar({ length: 50 }).notNull(),
+  /** dict_value */
+  dict_value: varchar({ length: 50 }).notNull(),
+  /** dict_label */
+  dict_label: varchar({ length: 50 }).notNull(),
+  /** sorting */
+  sorting: integer().notNull(),
+  /** create_by */
+  create_by: integer().notNull(),
+  /** update_by */
+  update_by: integer().notNull(),
+  /** del_flag
+   * 0: Not deleted; 1: Deleted
+   */
+  del_flag: varchar({ length: 1 }).default('0'),
+  /** create_time */
+  create_time: timestamp({ withTimezone: true }).notNull(),
+  /** update_time */
+  update_time: timestamp({ withTimezone: true }).notNull(),
+ });
