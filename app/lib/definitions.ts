@@ -167,3 +167,17 @@ export type SysDictType = {
   createTime?: Date;
   updateTime?: Date;
 };
+
+export type SysDictItem = {
+  id?: number;
+  dictTypeId?: number;
+  dictName?: string;
+  dictValue?: string;
+  dictLabel?: string;
+  sorting?: number;
+  createBy?: number;
+  updateBy?: number;
+  delFlag?: string | null;
+  createTime?: Date;
+  updateTime?: Date;
+};
