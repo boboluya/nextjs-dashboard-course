@@ -1,6 +1,6 @@
 "use client";
 
-import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { PencilIcon, PlusIcon, TrashIcon,Cog6ToothIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { deleteDictType } from "../_lib/actions";
@@ -18,6 +18,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 export function CreateDictTypeButton() {
   return (
@@ -28,6 +29,32 @@ export function CreateDictTypeButton() {
       <span className="hidden md:block">Create Dict Type</span>{" "}
       <PlusIcon className="h-5 md:ml-4" />
     </Link>
+  );
+}
+
+export function ConfigDictItemButton({ id }: { id: number }) {
+  const searchParams = useSearchParams();
+  const { replace } = useRouter();
+
+  const handleSearch = () => {
+    const params = new URLSearchParams(searchParams);
+    params.set("pageNum", "1");
+    params.set("dictTypeId", String(id));
+    replace(`/dashboard/sys_dict_item?${params.toString()}`);
+  };
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          type="button"
+          className="rounded-md border p-2 hover:bg-gray-100 hover:cursor-pointer"
+          onClick={handleSearch}
+        >
+          <Cog6ToothIcon className="w-5" />
+        </button>
+      </TooltipTrigger>
+      <TooltipContent>Options</TooltipContent>
+    </Tooltip>
   );
 }
 
@@ -77,7 +104,8 @@ export function DeleteDictTypeButton({ id }: { id: number }) {
         <DialogHeader>
           <DialogTitle>Confirm Delete</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete this dictionary type? This action cannot be undone.
+            Are you sure you want to delete this dictionary type? This action
+            cannot be undone.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="">

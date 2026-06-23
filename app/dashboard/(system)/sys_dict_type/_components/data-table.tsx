@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { EditDictTypeButton, DeleteDictTypeButton } from "./action-buttons";
+import { EditDictTypeButton, DeleteDictTypeButton,ConfigDictItemButton } from "./action-buttons";
 import { Tag } from "@/components/custome_ui/tag";
 import { DocumentTextIcon, TagIcon } from "@heroicons/react/24/outline";
 import { HasPermi } from "@/components/has-permi";
@@ -72,9 +72,7 @@ export function DataTable({
                         <DocumentTextIcon className="h-4 w-4 text-white" />
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900">
-                          {row.id}
-                        </p>
+                        <p className="font-medium text-gray-900">{row.id}</p>
                       </div>
                     </div>
                   </TableCell>
@@ -92,6 +90,12 @@ export function DataTable({
                   </TableCell>
                   <TableCell className="pr-6">
                     <div className="flex justify-end gap-2">
+                      <HasPermi
+                        session={session}
+                        permission="system:sys_dict_item:list"
+                      >
+                        <ConfigDictItemButton id={row.id!} />
+                      </HasPermi>
                       <HasPermi
                         session={session}
                         permission="system:sys_dict_type:edit"
