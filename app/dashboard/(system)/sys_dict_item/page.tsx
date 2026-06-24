@@ -40,7 +40,7 @@ export default async function SysDictItemPage(props: {
         </div>
         <div className="mr-5">
           <HasPermi session={session} permission="system:sys_dict_item:add">
-            <CreateDictItemButton />
+            <CreateDictItemButton dictTypeId={queryParams.dictTypeId ? Number(queryParams.dictTypeId) : undefined} />
           </HasPermi>
         </div>
       </div>
@@ -52,7 +52,11 @@ export default async function SysDictItemPage(props: {
 
       {/* Table */}
       <div className="mt-6">
-        <DataTable session={session} data={data} />
+        <DataTable
+          session={session}
+          data={data}
+          dictTypeId={queryParams.dictTypeId ? Number(queryParams.dictTypeId) : undefined}
+        />
       </div>
 
       {/* Pagination */}

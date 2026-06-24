@@ -6,11 +6,18 @@ import { hasPermission } from "@/lib/permission";
 
 export default async function Page(props: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ dictTypeId?: string }>;
 }) {
   await hasPermission("system:sys_dict_item:edit");
 
-  const params = await props.params;
+  const [params, searchParams] = await Promise.all([
+    props.params,
+    props.searchParams,
+  ]);
   const id = Number(params.id);
+  const dictTypeId = searchParams.dictTypeId
+    ? Number(searchParams.dictTypeId)
+    : undefined;
   const [dictItems, dictTypes] = await Promise.all([
     fetchDictItemById(id),
     fetchDictTypes(),
@@ -26,7 +33,9 @@ export default async function Page(props: {
         breadcrumbs={[
           {
             label: "Dict Items",
-            href: "/dashboard/sys_dict_item",
+            href: dictTypeId
+              ? `/dashboard/sys_dict_item?dictTypeId=${dictTypeId}`
+              : "/dashboard/sys_dict_item",
           },
           {
             label: "Edit Dict Item",
@@ -35,7 +44,7 @@ export default async function Page(props: {
           },
         ]}
       />
-      <EditForm dictItem={dictItems[0]} dictTypes={dictTypes} />
+      <EditForm dictItem={dictItems[0]} dictTypes={dictTypes} dictTypeId={dictTypeId} />
     </div>
   );
 }

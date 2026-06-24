@@ -3,8 +3,14 @@ import { fetchDictTypes } from "../_lib/actions";
 import Breadcrumbs from "@/components/custome_ui/breadcrumbs";
 import { hasPermission } from "@/lib/permission";
 
-export default async function Page() {
+export default async function Page(props: {
+  searchParams: Promise<{ dictTypeId?: string }>;
+}) {
   await hasPermission("system:sys_dict_item:add");
+  const searchParams = await props.searchParams;
+  const dictTypeId = searchParams.dictTypeId
+    ? Number(searchParams.dictTypeId)
+    : undefined;
   const dictTypes = await fetchDictTypes();
   return (
     <div>
@@ -12,7 +18,9 @@ export default async function Page() {
         breadcrumbs={[
           {
             label: "Dict Items",
-            href: "/dashboard/sys_dict_item",
+            href: dictTypeId
+              ? `/dashboard/sys_dict_item?dictTypeId=${dictTypeId}`
+              : "/dashboard/sys_dict_item",
           },
           {
             label: "Create Dict Item",
@@ -21,7 +29,7 @@ export default async function Page() {
           },
         ]}
       />
-      <CreateForm dictTypes={dictTypes} />
+      <CreateForm dictTypes={dictTypes} defaultDictTypeId={dictTypeId} />
     </div>
   );
 }

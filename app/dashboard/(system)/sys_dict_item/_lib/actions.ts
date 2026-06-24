@@ -92,7 +92,12 @@ export async function createSysDictItem(prevState: State, formData: FormData) {
     throw error("Create failed.");
   }
   revalidatePath("/dashboard/sys_dict_item");
-  redirect("/dashboard/sys_dict_item");
+  const dictTypeId = parsedData.data.dictTypeId;
+  if (dictTypeId) {
+    redirect(`/dashboard/sys_dict_item?dictTypeId=${dictTypeId}`);
+  } else {
+    redirect("/dashboard/sys_dict_item");
+  }
 }
 
 export async function fetchDictItemById(id: number): Promise<SysDictItem[]> {
@@ -138,7 +143,12 @@ export async function updateSysDictItem(
     throw error("Update failed.");
   }
   revalidatePath("/dashboard/sys_dict_item");
-  redirect("/dashboard/sys_dict_item");
+  const dictTypeId = parsedData.data.dictTypeId;
+  if (dictTypeId) {
+    redirect(`/dashboard/sys_dict_item?dictTypeId=${dictTypeId}`);
+  } else {
+    redirect("/dashboard/sys_dict_item");
+  }
 }
 
 export async function deleteDictItem(id: number) {

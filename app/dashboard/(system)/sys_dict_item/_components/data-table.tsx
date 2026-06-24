@@ -17,9 +17,11 @@ import { HasPermi } from "@/components/has-permi";
 export function DataTable({
   session,
   data,
+  dictTypeId,
 }: {
   session: any;
   data: SysDictItem[];
+  dictTypeId?: number;
 }) {
   if (!data || data.length === 0) {
     return (
@@ -102,7 +104,7 @@ export function DataTable({
                         session={session}
                         permission="system:sys_dict_item:edit"
                       >
-                        <EditDictItemButton id={row.id!} />
+                        <EditDictItemButton id={row.id!} dictTypeId={dictTypeId} />
                       </HasPermi>
                       <HasPermi
                         session={session}
@@ -155,7 +157,7 @@ export function DataTable({
                   session={session}
                   permission="system:sys_dict_item:edit"
                 >
-                  <EditDictItemButton id={row.id!} />
+                  <EditDictItemButton id={row.id!} dictTypeId={dictTypeId} />
                 </HasPermi>
                 <HasPermi
                   session={session}

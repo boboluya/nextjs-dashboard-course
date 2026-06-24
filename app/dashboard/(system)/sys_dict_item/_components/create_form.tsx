@@ -14,7 +14,13 @@ import {
 import Link from "next/link";
 import { SysDictType } from "@/app/lib/definitions";
 
-export function CreateForm({ dictTypes }: { dictTypes: SysDictType[] }) {
+export function CreateForm({
+  dictTypes,
+  defaultDictTypeId,
+}: {
+  dictTypes: SysDictType[];
+  defaultDictTypeId?: number;
+}) {
   const initialState: State = { errors: {}, message: null };
   const [state, formAction, isPending] = useActionState(createSysDictItem, initialState);
 
@@ -40,10 +46,19 @@ export function CreateForm({ dictTypes }: { dictTypes: SysDictType[] }) {
               Dict Type
             </label>
             <div className="relative">
+              {defaultDictTypeId && (
+                <input
+                  type="hidden"
+                  name="dictTypeId"
+                  value={defaultDictTypeId}
+                />
+              )}
               <select
                 id="dictTypeId-field"
                 name="dictTypeId"
-                className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm pl-10 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-200"
+                defaultValue={defaultDictTypeId ?? ""}
+                disabled={!!defaultDictTypeId}
+                className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm pl-10 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <option value="">Select a dict type</option>
                 {dictTypes.map((dt) => (
@@ -184,7 +199,7 @@ export function CreateForm({ dictTypes }: { dictTypes: SysDictType[] }) {
                 variant="outline"
                 className="px-6 border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200"
               >
-                <Link href="/dashboard/sys_dict_item">
+                <Link href={defaultDictTypeId ? `/dashboard/sys_dict_item?dictTypeId=${defaultDictTypeId}` : "/dashboard/sys_dict_item"}>
                   Cancel
                 </Link>
               </Button>

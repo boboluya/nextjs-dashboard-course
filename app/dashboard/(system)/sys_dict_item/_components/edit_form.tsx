@@ -16,9 +16,11 @@ import { SysDictItem, SysDictType } from "@/app/lib/definitions";
 export function EditForm({
   dictItem,
   dictTypes,
+  dictTypeId,
 }: {
   dictItem: SysDictItem;
   dictTypes: SysDictType[];
+  dictTypeId?: number;
 }) {
   const initialState: EditState = { errors: {}, message: null };
   const updateDictItemWithId = updateSysDictItem.bind(null, dictItem.id!);
@@ -194,7 +196,7 @@ export function EditForm({
                 variant="outline"
                 className="px-6 border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200"
               >
-                <Link href="/dashboard/sys_dict_item">
+                <Link href={dictTypeId ? `/dashboard/sys_dict_item?dictTypeId=${dictTypeId}` : "/dashboard/sys_dict_item"}>
                   Cancel
                 </Link>
               </Button>

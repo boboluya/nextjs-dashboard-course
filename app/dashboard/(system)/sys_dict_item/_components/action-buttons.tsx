@@ -19,10 +19,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-export function CreateDictItemButton() {
+export function CreateDictItemButton({ dictTypeId }: { dictTypeId?: number }) {
+  const href = dictTypeId
+    ? `/dashboard/sys_dict_item/create?dictTypeId=${dictTypeId}`
+    : "/dashboard/sys_dict_item/create";
   return (
     <Link
-      href="/dashboard/sys_dict_item/create"
+      href={href}
       className="flex h-10 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
     >
       <span className="hidden md:block">Create Dict Item</span>{" "}
@@ -31,14 +34,20 @@ export function CreateDictItemButton() {
   );
 }
 
-export function EditDictItemButton({ id }: { id: number }) {
+export function EditDictItemButton({
+  id,
+  dictTypeId,
+}: {
+  id: number;
+  dictTypeId?: number;
+}) {
+  const href = dictTypeId
+    ? `/dashboard/sys_dict_item/${id}/edit?dictTypeId=${dictTypeId}`
+    : `/dashboard/sys_dict_item/${id}/edit`;
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Link
-          href={`/dashboard/sys_dict_item/${id}/edit`}
-          className="rounded-md border p-2 hover:bg-gray-100"
-        >
+        <Link href={href} className="rounded-md border p-2 hover:bg-gray-100">
           <PencilIcon className="w-5" />
         </Link>
       </TooltipTrigger>
