@@ -168,6 +168,18 @@ export type SysDictType = {
   updateTime?: Date;
 };
 
+export type SysDept = {
+  id?: number;
+  parentId?: number;
+  ancestors?: string;
+  deptName?: string;
+  orderNum?: number;
+  leader?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  status?: string | null;
+};
+
 export type SysDictItem = {
   id?: number;
   dictTypeId?: number;

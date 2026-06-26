@@ -107,32 +107,31 @@ export const sys_menuTable = pgTable("sys_menu", {
   /** del_flag
    * 0: Not deleted; 1: Deleted
    */
-  del_flag: varchar({ length: 1 }).default('0'),
- });
+  del_flag: varchar({ length: 1 }).default("0"),
+});
 
-
- /** sys_user_role table */
- export const sys_userRoleTable = pgTable("sys_user_role", {
+/** sys_user_role table */
+export const sys_userRoleTable = pgTable("sys_user_role", {
   /** user_role_id */
   id: bigserial({ mode: "number" }).primaryKey(),
   /** user_id */
   user_id: bigint("user_id", { mode: "number" }).notNull(),
   /** role_id */
-  role_id: bigint("role_id", { mode: "number" }).notNull()
- });
+  role_id: bigint("role_id", { mode: "number" }).notNull(),
+});
 
 /** sys_roleMenuTable */
- export const sys_roleMenuTable = pgTable("sys_role_menu", {
+export const sys_roleMenuTable = pgTable("sys_role_menu", {
   /** role_menu_id */
   id: bigserial({ mode: "number" }).primaryKey(),
   /** role_id */
   role_id: bigint("role_id", { mode: "number" }).notNull(),
   /** menu_id */
-  menu_id: bigint("menu_id", { mode: "number" }).notNull()
- });
+  menu_id: bigint("menu_id", { mode: "number" }).notNull(),
+});
 
- /** sys_dict_type */
- export const sys_dictTypeTable = pgTable("sys_dict_type", {
+/** sys_dict_type */
+export const sys_dictTypeTable = pgTable("sys_dict_type", {
   /** dict_type_id */
   id: bigserial({ mode: "number" }).primaryKey(),
   /** dict_name */
@@ -146,15 +145,15 @@ export const sys_menuTable = pgTable("sys_menu", {
   /** del_flag
    * 0: Not deleted; 1: Deleted
    */
-  del_flag: varchar({ length: 1 }).default('0'),
+  del_flag: varchar({ length: 1 }).default("0"),
   /** create_time */
   create_time: timestamp({ withTimezone: true }).notNull(),
   /** update_time */
   update_time: timestamp({ withTimezone: true }).notNull(),
- });
+});
 
- /** sys_dict_item */
- export const sys_dictItemTable = pgTable("sys_dict_item", {
+/** sys_dict_item */
+export const sys_dictItemTable = pgTable("sys_dict_item", {
   /** dict_item_id */
   id: bigserial({ mode: "number" }).primaryKey(),
   /** dict_type_id */
@@ -174,9 +173,45 @@ export const sys_menuTable = pgTable("sys_menu", {
   /** del_flag
    * 0: Not deleted; 1: Deleted
    */
-  del_flag: varchar({ length: 1 }).default('0'),
+  del_flag: varchar({ length: 1 }).default("0"),
   /** create_time */
   create_time: timestamp({ withTimezone: true }).notNull(),
   /** update_time */
   update_time: timestamp({ withTimezone: true }).notNull(),
- });
+});
+
+/** sys_dept */
+export const sys_deptTable = pgTable("sys_dept", {
+  /** dept_id */
+  id: bigserial({ mode: "number" }).primaryKey(),
+  /** dept_name */
+  dept_name: varchar({ length: 50 }).notNull(),
+  /** parent_id */
+  parent_id: bigint("parent_id", { mode: "number" }).notNull(),
+  /** ancestors */
+  ancestors: varchar({ length: 255 }).notNull(),
+  /** order_num */
+  order_num: integer().notNull(),
+  /** leader */
+  leader: varchar({ length: 20 }),
+  /** phone */
+  phone: varchar({ length: 11 }),
+  /** email */
+  email: varchar({ length: 50 }),
+  /** status
+   * 0: Active; 1: Disabled
+   */
+  status: varchar({ length: 1 }).default("0"),
+  /** create_by */
+  create_by: integer().notNull(),
+  /** update_by */
+  update_by: integer().notNull(),
+  /** del_flag
+   * 0: Not deleted; 1: Deleted
+   */
+  del_flag: varchar({ length: 1 }).default("0"),
+  /** create_time */
+  create_time: timestamp({ withTimezone: true }).notNull(),
+  /** update_time */
+  update_time: timestamp({ withTimezone: true }).notNull(),
+});
