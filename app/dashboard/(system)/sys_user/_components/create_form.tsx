@@ -19,19 +19,22 @@ import {
   KeyIcon,
   UserGroupIcon,
   CheckCircleIcon,
-  ArrowPathIcon
+  ArrowPathIcon,
+  BuildingOfficeIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { SysRole } from "@/app/lib/definitions";
 import { RoleMultiSelect } from "./role-select";
+import { DeptTreeSelect, TreeNode } from "@/app/dashboard/(system)/sys_dept/_components/dept-tree-select";
 
-export function CreateForm({ roles }: { roles: SysRole[] }) {
+export function CreateForm({ roles, deptTree }: { roles: SysRole[]; deptTree: TreeNode[] }) {
   const sexDicts = [
     { dictValue: "1", dictLabel: "Male" },
     { dictValue: "2", dictLabel: "Female" },
   ]
   const [sexValue, setSexValue] = useState("");
   const [selectedRoleIds, setSelectedRoleIds] = useState<number[]>([]);
+  const [deptId, setDeptId] = useState<number | null>(null);
   const initialState: State = { errors: {}, message: null }
   const [state, formAction, isPending] = useActionState(createSysUser, initialState)
   return (
@@ -215,6 +218,21 @@ export function CreateForm({ roles }: { roles: SysRole[] }) {
               roles={roles}
               selectedRoleIds={selectedRoleIds}
               onChange={setSelectedRoleIds}
+            />
+          </div>
+
+          {/* Department Field */}
+          <div className="space-y-2">
+            <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+              <BuildingOfficeIcon className="h-4 w-4 text-gray-500" />
+              Department
+            </label>
+            <DeptTreeSelect
+              treeData={deptTree}
+              value={deptId}
+              onValueChange={setDeptId}
+              name="deptId"
+              placeholder="Select department"
             />
           </div>
         </div>

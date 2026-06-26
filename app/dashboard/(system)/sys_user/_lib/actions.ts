@@ -3,6 +3,7 @@
 import { SysUser } from "@/app/lib/definitions";
 import { selectUsers, selectTotal, insertUser, updateUser, softDeleteUser, findUserById, resetUserPassword, findRolesByUserId, selectAllRoles, insertUserRole, deleteUserRoles, findRoleNamesByUserIds } from "./repository";
 import { SysRole } from "@/app/lib/definitions";
+import { fetchAllDeptsForTree as fetchAllDepts } from "@/app/dashboard/(system)/sys_dept/_lib/actions";
 import z from "zod";
 import bcrypt from "bcrypt";
 import { error } from "console";
@@ -78,6 +79,7 @@ export async function createSysUser(prevState: State, formData: FormData) {
     };
   }
   const roleIds = formData.getAll("roleIds").map(Number).filter((id) => !isNaN(id));
+  const deptId = formData.get("deptId") ? Number(formData.get("deptId")) : null;
   const date = new Date();
   const bcryptedPw = await bcrypt.hash(parsedData.data.password, 10)
   try {
@@ -87,6 +89,7 @@ export async function createSysUser(prevState: State, formData: FormData) {
       email: parsedData.data.email,
       sex: parsedData.data.sex,
       phoneNumber: String(parsedData.data.phonenumber),
+      deptId: deptId,
       createTime: date,
       password: bcryptedPw,
     }
@@ -123,6 +126,12 @@ export async function fetchRoleNamesByUserIds(
   return Object.fromEntries(map);
 }
 
+export async function fetchAllDeptsForTree(): Promise<
+  { id: number; parentId: number; label: string }[]
+> {
+  return await fetchAllDepts();
+}
+
 export async function updateSysUser(userId: number, prevState: EditState, formData: FormData): Promise<EditState> {
   await hasApiPermission("system:sys_user:edit");
 
@@ -142,6 +151,7 @@ export async function updateSysUser(userId: number, prevState: EditState, formDa
     };
   }
   const roleIds = formData.getAll("roleIds").map(Number).filter((id) => !isNaN(id));
+  const deptId = formData.get("deptId") ? Number(formData.get("deptId")) : null;
   try {
     const user: SysUser = {
       userId: parsedData.data.userId,
@@ -150,6 +160,7 @@ export async function updateSysUser(userId: number, prevState: EditState, formDa
       email: parsedData.data.email,
       sex: parsedData.data.sex,
       phoneNumber: String(parsedData.data.phonenumber),
+      deptId: deptId,
     }
     await updateUser(user);
     // Update roles: delete existing, insert new

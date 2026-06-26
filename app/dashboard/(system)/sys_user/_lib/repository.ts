@@ -110,6 +110,7 @@ export async function insertUser(user: SysUser) {
     user_name: user.userName ?? "",
     nick_name: user.nickName ?? "",
     password: user.password ?? "",
+    dept_id: user.deptId ?? null,
     create_dept: user.deptId ?? 0,
     create_by: 1,
     create_time: user.createTime ?? new Date(),
@@ -134,6 +135,7 @@ export async function updateUser(user: SysUser) {
   if (user.email !== undefined) updateData.email = user.email;
   if (user.phoneNumber !== undefined) updateData.phonenumber = user.phoneNumber;
   if (user.sex !== undefined) updateData.sex = user.sex;
+  if (user.deptId !== undefined) updateData.dept_id = user.deptId;
 
   await db
     .update(sys_usersTable)

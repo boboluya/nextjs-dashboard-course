@@ -17,19 +17,22 @@ import {
   PhoneIcon,
   UserGroupIcon,
   CheckCircleIcon,
-  ArrowPathIcon
+  ArrowPathIcon,
+  BuildingOfficeIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { SysUser, SysRole } from "@/app/lib/definitions";
 import { RoleMultiSelect } from "./role-select";
+import { DeptTreeSelect, TreeNode } from "@/app/dashboard/(system)/sys_dept/_components/dept-tree-select";
 
-export function EditForm({ user, roles, selectedRoleIds: initialRoleIds }: { user: SysUser; roles: SysRole[]; selectedRoleIds: number[] }) {
+export function EditForm({ user, roles, selectedRoleIds: initialRoleIds, deptTree }: { user: SysUser; roles: SysRole[]; selectedRoleIds: number[]; deptTree: TreeNode[] }) {
   const sexDicts = [
     { dictValue: "1", dictLabel: "Male" },
     { dictValue: "2", dictLabel: "Female" },
   ]
   const [sexValue, setSexValue] = useState(user.sex ?? "");
   const [selectedRoleIds, setSelectedRoleIds] = useState<number[]>(initialRoleIds);
+  const [deptId, setDeptId] = useState<number | null>(user.deptId ?? null);
   const initialState: EditState = { errors: {}, message: null }
   const updateSysUserWithId = updateSysUser.bind(null, user.userId!)
   const [state, formAction, isPending] = useActionState(updateSysUserWithId, initialState)
@@ -191,6 +194,21 @@ export function EditForm({ user, roles, selectedRoleIds: initialRoleIds }: { use
               roles={roles}
               selectedRoleIds={selectedRoleIds}
               onChange={setSelectedRoleIds}
+            />
+          </div>
+
+          {/* Department Field */}
+          <div className="space-y-2">
+            <label className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+              <BuildingOfficeIcon className="h-4 w-4 text-gray-500" />
+              Department
+            </label>
+            <DeptTreeSelect
+              treeData={deptTree}
+              value={deptId}
+              onValueChange={setDeptId}
+              name="deptId"
+              placeholder="Select department"
             />
           </div>
         </div>
