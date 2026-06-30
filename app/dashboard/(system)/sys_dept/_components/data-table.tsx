@@ -18,6 +18,7 @@ import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 import { HasPermi } from "@/components/has-permi";
+import { DictTag } from "../../sys_dict_type/_components/dict-tag";
 
 export function DataTable({
   session,
@@ -112,10 +113,7 @@ export function DataTable({
                     {row.orderNum}
                   </TableCell>
                   <TableCell>
-                    <StatusTag
-                      text={row.status === "0" ? "Active" : "Disabled"}
-                      color={row.status === "0" ? "green" : "red"}
-                    />
+                    <DictTag dictType="status" dictValue={row.status!} color={"green"} />
                   </TableCell>
                   <TableCell className="pr-6">
                     <div className="flex justify-end gap-2">

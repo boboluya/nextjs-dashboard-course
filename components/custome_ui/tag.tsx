@@ -28,7 +28,7 @@ interface TagProps extends VariantProps<typeof tagVariants> {
   className?: string;
 }
 
-export function Tag({ text, color, className }: TagProps) {
+export function Tag({ text, color = "gray", className }: TagProps) {
   return (
     <span className={tagVariants({ color, className })}>
       {text}
