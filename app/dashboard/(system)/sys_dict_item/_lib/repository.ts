@@ -1,6 +1,6 @@
 "use server";
 import { db } from "@/src/index";
-import { sys_dictItemTable } from "@/src/db/schema";
+import { sys_dictItemTable, sys_dictTypeTable } from "@/src/db/schema";
 import { eq, and, like, ne } from "drizzle-orm";
 import { SysDictItem } from "@/app/lib/definitions";
 import { PageParams } from "./type";
@@ -116,6 +116,36 @@ export async function updateDictItem(dictItem: SysDictItem) {
     .update(sys_dictItemTable)
     .set(updateData)
     .where(eq(sys_dictItemTable.id, dictItem.id!));
+}
+
+export async function findDictItemsByType(dictType: string): Promise<SysDictItem[]> {
+  const result = await db
+    .select({
+      id: sys_dictItemTable.id,
+      dict_type_id: sys_dictItemTable.dict_type_id,
+      dict_name: sys_dictItemTable.dict_name,
+      dict_value: sys_dictItemTable.dict_value,
+      dict_label: sys_dictItemTable.dict_label,
+      sorting: sys_dictItemTable.sorting,
+      create_by: sys_dictItemTable.create_by,
+      update_by: sys_dictItemTable.update_by,
+      del_flag: sys_dictItemTable.del_flag,
+      create_time: sys_dictItemTable.create_time,
+      update_time: sys_dictItemTable.update_time,
+    })
+    .from(sys_dictItemTable)
+    .innerJoin(
+      sys_dictTypeTable,
+      eq(sys_dictItemTable.dict_type_id, sys_dictTypeTable.id),
+    )
+    .where(
+      and(
+        eq(sys_dictTypeTable.dict_type, dictType),
+        ne(sys_dictItemTable.del_flag, "2"),
+      ),
+    )
+    .orderBy(sys_dictItemTable.sorting);
+  return result.map(dbMapping);
 }
 
 export async function softDeleteDictItem(id: number) {

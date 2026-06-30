@@ -1,6 +1,6 @@
 "use server";
 
-import { SysDictType } from "@/app/lib/definitions";
+import { SysDictItem, SysDictType } from "@/app/lib/definitions";
 import {
   selectDictTypes,
   selectDictTypeTotal,
@@ -9,6 +9,7 @@ import {
   softDeleteDictType,
   findDictTypeById,
 } from "./repository";
+import { findDictItemsByType } from "@/app/dashboard/(system)/sys_dict_item/_lib/repository";
 import z from "zod";
 import { error } from "console";
 import { revalidatePath } from "next/cache";
@@ -124,4 +125,13 @@ export async function deleteDictType(id: number) {
     throw error("Delete failed.");
   }
   revalidatePath("/dashboard/sys_dict_type");
+}
+
+/**
+ * Query dict items by dict_type string (e.g. "gender", "status").
+ * Returns all non-deleted items for the given type, sorted by sorting field.
+ * Use this from other features to look up dictionary values by type name.
+ */
+export async function fetchDictItemsByType(dictType: string): Promise<SysDictItem[]> {
+  return await findDictItemsByType(dictType);
 }
