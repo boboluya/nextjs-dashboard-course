@@ -19,7 +19,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { HasPermi } from "@/components/has-permi";
 
-export function DataTable({ session, data }: { session: any; data: SysUser[] }) {
+export function DataTable({ data }: { data: SysUser[] }) {
   if (!data || data.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-gray-300 bg-white p-12 text-center">
@@ -81,7 +81,9 @@ export function DataTable({ session, data }: { session: any; data: SysUser[] }) 
                         <p className="font-medium text-gray-900">
                           {row.nickName}
                         </p>
-                        <p className="text-xs text-gray-500">ID: {row.userId}</p>
+                        <p className="text-xs text-gray-500">
+                          ID: {row.userId}
+                        </p>
                       </div>
                     </div>
                   </TableCell>
@@ -128,13 +130,13 @@ export function DataTable({ session, data }: { session: any; data: SysUser[] }) 
                   </TableCell>
                   <TableCell className="pr-6">
                     <div className="flex justify-end gap-2">
-                      <HasPermi session={session} permission="system:sys_user:edit">
+                      <HasPermi permission="system:sys_user:edit">
                         <EditUserButton id={row.userId!} />
                       </HasPermi>
-                      <HasPermi session={session} permission="system:sys_user:resetpwd">
+                      <HasPermi permission="system:sys_user:resetpwd">
                         <ResetPasswordButton userId={row.userId!} />
                       </HasPermi>
-                      <HasPermi session={session} permission="system:sys_user:delete">
+                      <HasPermi permission="system:sys_user:delete">
                         <DeleteUserButton id={row.userId!} />
                       </HasPermi>
                     </div>
@@ -160,7 +162,9 @@ export function DataTable({ session, data }: { session: any; data: SysUser[] }) 
                     {row.nickName?.charAt(0)?.toUpperCase() || "U"}
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">{row.nickName}</p>
+                    <p className="font-semibold text-gray-900">
+                      {row.nickName}
+                    </p>
                     <p className="text-sm text-gray-500">@{row.userName}</p>
                   </div>
                 </div>
@@ -202,11 +206,11 @@ export function DataTable({ session, data }: { session: any; data: SysUser[] }) 
               </div>
 
               <div className="mt-4 flex justify-end gap-2 border-t border-gray-100 pt-3">
-                <HasPermi session={session} permission="system:sys_user:edit">
+                <HasPermi permission="system:sys_user:edit">
                   <EditUserButton id={row.userId!} />
                 </HasPermi>
                 <ResetPasswordButton userId={row.userId!} />
-                <HasPermi session={session} permission="system:sys_user:delete">
+                <HasPermi permission="system:sys_user:delete">
                   <DeleteUserButton id={row.userId!} />
                 </HasPermi>
               </div>

@@ -33,7 +33,11 @@ interface TreeNode {
 
 const typeMap: Record<
   string,
-  { label: string; color: "blue" | "green" | "orange" | "gray"; icon: typeof FolderIcon }
+  {
+    label: string;
+    color: "blue" | "green" | "orange" | "gray";
+    icon: typeof FolderIcon;
+  }
 > = {
   D: { label: "Directory", color: "blue", icon: FolderIcon },
   M: { label: "Menu", color: "green", icon: DocumentIcon },
@@ -91,7 +95,7 @@ function collectAllIds(nodes: TreeNode[]): number[] {
 
 // ── component ────────────────────────────────────────────
 
-export function TreeTable({ session, data }: { session: any; data: SysMenu[] }) {
+export function TreeTable({ data }: { data: SysMenu[] }) {
   const tree = useMemo(() => buildDataTree(data), [data]);
   const allExpandableIds = useMemo(() => collectAllIds(tree), [tree]);
 
@@ -234,9 +238,7 @@ export function TreeTable({ session, data }: { session: any; data: SysMenu[] }) 
                           <p className="font-medium text-gray-900">
                             {menu.name}
                           </p>
-                          <p className="text-xs text-gray-500">
-                            ID: {menu.id}
-                          </p>
+                          <p className="text-xs text-gray-500">ID: {menu.id}</p>
                         </div>
                       </div>
                     </TableCell>
@@ -273,10 +275,10 @@ export function TreeTable({ session, data }: { session: any; data: SysMenu[] }) 
                     </TableCell>
                     <TableCell className="pr-6">
                       <div className="flex justify-end gap-2">
-                        <HasPermi session={session} permission="system:sys_menu:edit">
+                        <HasPermi permission="system:sys_menu:edit">
                           <EditMenuButton id={menu.id!} />
                         </HasPermi>
-                        <HasPermi session={session} permission="system:sys_menu:delete">
+                        <HasPermi permission="system:sys_menu:delete">
                           <DeleteMenuButton id={menu.id!} />
                         </HasPermi>
                       </div>
@@ -325,9 +327,7 @@ export function TreeTable({ session, data }: { session: any; data: SysMenu[] }) 
                       <TypeIcon className="h-5 w-5" />
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900">
-                        {menu.name}
-                      </p>
+                      <p className="font-semibold text-gray-900">{menu.name}</p>
                       <p className="text-sm text-gray-500">{menu.label}</p>
                     </div>
                   </div>
@@ -362,10 +362,10 @@ export function TreeTable({ session, data }: { session: any; data: SysMenu[] }) 
                 </div>
 
                 <div className="mt-4 flex justify-end gap-2 border-t border-gray-100 pt-3">
-                  <HasPermi session={session} permission="system:sys_menu:edit">
+                  <HasPermi permission="system:sys_menu:edit">
                     <EditMenuButton id={menu.id!} />
                   </HasPermi>
-                  <HasPermi session={session} permission="system:sys_menu:delete">
+                  <HasPermi permission="system:sys_menu:delete">
                     <DeleteMenuButton id={menu.id!} />
                   </HasPermi>
                 </div>

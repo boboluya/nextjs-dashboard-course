@@ -9,18 +9,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { EditDictTypeButton, DeleteDictTypeButton,ConfigDictItemButton } from "./action-buttons";
+import {
+  EditDictTypeButton,
+  DeleteDictTypeButton,
+  ConfigDictItemButton,
+} from "./action-buttons";
 import { Tag } from "@/components/custome_ui/tag";
 import { DocumentTextIcon, TagIcon } from "@heroicons/react/24/outline";
 import { HasPermi } from "@/components/has-permi";
 
-export function DataTable({
-  session,
-  data,
-}: {
-  session: any;
-  data: SysDictType[];
-}) {
+export function DataTable({ data }: { data: SysDictType[] }) {
   if (!data || data.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-gray-300 bg-white p-12 text-center">
@@ -90,22 +88,13 @@ export function DataTable({
                   </TableCell>
                   <TableCell className="pr-6">
                     <div className="flex justify-end gap-2">
-                      <HasPermi
-                        session={session}
-                        permission="system:sys_dict_item:list"
-                      >
+                      <HasPermi permission="system:sys_dict_item:list">
                         <ConfigDictItemButton id={row.id!} />
                       </HasPermi>
-                      <HasPermi
-                        session={session}
-                        permission="system:sys_dict_type:edit"
-                      >
+                      <HasPermi permission="system:sys_dict_type:edit">
                         <EditDictTypeButton id={row.id!} />
                       </HasPermi>
-                      <HasPermi
-                        session={session}
-                        permission="system:sys_dict_type:delete"
-                      >
+                      <HasPermi permission="system:sys_dict_type:delete">
                         <DeleteDictTypeButton id={row.id!} />
                       </HasPermi>
                     </div>
@@ -148,16 +137,10 @@ export function DataTable({
               </div>
 
               <div className="mt-4 flex justify-end gap-2 border-t border-gray-100 pt-3">
-                <HasPermi
-                  session={session}
-                  permission="system:sys_dict_type:edit"
-                >
+                <HasPermi permission="system:sys_dict_type:edit">
                   <EditDictTypeButton id={row.id!} />
                 </HasPermi>
-                <HasPermi
-                  session={session}
-                  permission="system:sys_dict_type:delete"
-                >
+                <HasPermi permission="system:sys_dict_type:delete">
                   <DeleteDictTypeButton id={row.id!} />
                 </HasPermi>
               </div>

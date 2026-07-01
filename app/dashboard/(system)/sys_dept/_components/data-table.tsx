@@ -20,13 +20,7 @@ import {
 import { HasPermi } from "@/components/has-permi";
 import { DictTag } from "../../sys_dict_type/_components/dict-tag";
 
-export function DataTable({
-  session,
-  data,
-}: {
-  session: any;
-  data: SysDept[];
-}) {
+export function DataTable({ data }: { data: SysDept[] }) {
   if (!data || data.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-gray-300 bg-white p-12 text-center">
@@ -113,20 +107,18 @@ export function DataTable({
                     {row.orderNum}
                   </TableCell>
                   <TableCell>
-                    <DictTag dictType="status" dictValue={row.status!} color={"green"} />
+                    <DictTag
+                      dictType="status"
+                      dictValue={row.status!}
+                      color={"green"}
+                    />
                   </TableCell>
                   <TableCell className="pr-6">
                     <div className="flex justify-end gap-2">
-                      <HasPermi
-                        session={session}
-                        permission="system:sys_dept:edit"
-                      >
+                      <HasPermi permission="system:sys_dept:edit">
                         <EditDeptButton id={row.id!} />
                       </HasPermi>
-                      <HasPermi
-                        session={session}
-                        permission="system:sys_dept:delete"
-                      >
+                      <HasPermi permission="system:sys_dept:delete">
                         <DeleteDeptButton id={row.id!} />
                       </HasPermi>
                     </div>
@@ -188,13 +180,10 @@ export function DataTable({
               </div>
 
               <div className="mt-4 flex justify-end gap-2 border-t border-gray-100 pt-3">
-                <HasPermi session={session} permission="system:sys_dept:edit">
+                <HasPermi permission="system:sys_dept:edit">
                   <EditDeptButton id={row.id!} />
                 </HasPermi>
-                <HasPermi
-                  session={session}
-                  permission="system:sys_dept:delete"
-                >
+                <HasPermi permission="system:sys_dept:delete">
                   <DeleteDeptButton id={row.id!} />
                 </HasPermi>
               </div>

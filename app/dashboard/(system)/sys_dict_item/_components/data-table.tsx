@@ -15,11 +15,9 @@ import { ListBulletIcon, TagIcon } from "@heroicons/react/24/outline";
 import { HasPermi } from "@/components/has-permi";
 
 export function DataTable({
-  session,
   data,
   dictTypeId,
 }: {
-  session: any;
   data: SysDictItem[];
   dictTypeId?: number;
 }) {
@@ -77,9 +75,7 @@ export function DataTable({
                         <ListBulletIcon className="h-4 w-4 text-white" />
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900">
-                          {row.id}
-                        </p>
+                        <p className="font-medium text-gray-900">{row.id}</p>
                       </div>
                     </div>
                   </TableCell>
@@ -95,21 +91,16 @@ export function DataTable({
                   <TableCell className="text-gray-600">
                     {row.dictName}
                   </TableCell>
-                  <TableCell className="text-gray-600">
-                    {row.sorting}
-                  </TableCell>
+                  <TableCell className="text-gray-600">{row.sorting}</TableCell>
                   <TableCell className="pr-6">
                     <div className="flex justify-end gap-2">
-                      <HasPermi
-                        session={session}
-                        permission="system:sys_dict_item:edit"
-                      >
-                        <EditDictItemButton id={row.id!} dictTypeId={dictTypeId} />
+                      <HasPermi permission="system:sys_dict_item:edit">
+                        <EditDictItemButton
+                          id={row.id!}
+                          dictTypeId={dictTypeId}
+                        />
                       </HasPermi>
-                      <HasPermi
-                        session={session}
-                        permission="system:sys_dict_item:delete"
-                      >
+                      <HasPermi permission="system:sys_dict_item:delete">
                         <DeleteDictItemButton id={row.id!} />
                       </HasPermi>
                     </div>
@@ -153,16 +144,10 @@ export function DataTable({
               </div>
 
               <div className="mt-4 flex justify-end gap-2 border-t border-gray-100 pt-3">
-                <HasPermi
-                  session={session}
-                  permission="system:sys_dict_item:edit"
-                >
+                <HasPermi permission="system:sys_dict_item:edit">
                   <EditDictItemButton id={row.id!} dictTypeId={dictTypeId} />
                 </HasPermi>
-                <HasPermi
-                  session={session}
-                  permission="system:sys_dict_item:delete"
-                >
+                <HasPermi permission="system:sys_dict_item:delete">
                   <DeleteDictItemButton id={row.id!} />
                 </HasPermi>
               </div>

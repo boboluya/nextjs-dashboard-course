@@ -7,14 +7,11 @@ import { CreateDictItemButton } from "./_components/action-buttons";
 import Breadcrumbs from "@/components/custome_ui/breadcrumbs";
 import { hasPermission } from "@/lib/permission";
 import { HasPermi } from "@/components/has-permi";
-import { auth } from "@/auth";
 
 export default async function SysDictItemPage(props: {
   searchParams: Promise<PageParams>;
 }) {
   await hasPermission("system:sys_dict_item:list");
-  const session = await auth();
-
   const queryParams = await props.searchParams;
   queryParams.pageNum = queryParams.pageNum ? Number(queryParams.pageNum) : 1;
   queryParams.pageSize = queryParams.pageSize
@@ -39,7 +36,7 @@ export default async function SysDictItemPage(props: {
           />
         </div>
         <div className="mr-5">
-          <HasPermi session={session} permission="system:sys_dict_item:add">
+          <HasPermi permission="system:sys_dict_item:add">
             <CreateDictItemButton dictTypeId={queryParams.dictTypeId ? Number(queryParams.dictTypeId) : undefined} />
           </HasPermi>
         </div>
@@ -53,7 +50,6 @@ export default async function SysDictItemPage(props: {
       {/* Table */}
       <div className="mt-6">
         <DataTable
-          session={session}
           data={data}
           dictTypeId={queryParams.dictTypeId ? Number(queryParams.dictTypeId) : undefined}
         />

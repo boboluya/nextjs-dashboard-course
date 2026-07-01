@@ -8,14 +8,11 @@ import { DocumentTextIcon } from "@heroicons/react/24/outline";
 import Breadcrumbs from "@/components/custome_ui/breadcrumbs";
 import { hasPermission } from "@/lib/permission";
 import { HasPermi } from "@/components/has-permi";
-import { auth } from "@/auth";
 
 export default async function SysDictTypePage(props: {
   searchParams: Promise<PageParams>;
 }) {
   await hasPermission("system:sys_dict_type:list");
-  const session = await auth();
-
   const queryParams = await props.searchParams;
   queryParams.pageNum = queryParams.pageNum ? Number(queryParams.pageNum) : 1;
   queryParams.pageSize = queryParams.pageSize
@@ -40,7 +37,7 @@ export default async function SysDictTypePage(props: {
           />
         </div>
         <div className="mr-5">
-          <HasPermi session={session} permission="system:sys_dict_type:add">
+          <HasPermi permission="system:sys_dict_type:add">
             <CreateDictTypeButton />
           </HasPermi>
         </div>
@@ -53,7 +50,7 @@ export default async function SysDictTypePage(props: {
 
       {/* Table */}
       <div className="mt-6">
-        <DataTable session={session} data={data} />
+        <DataTable data={data} />
       </div>
 
       {/* Pagination */}

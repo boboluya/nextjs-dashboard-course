@@ -1,8 +1,4 @@
-import {
-  searchPages,
-  searchTotal,
-  fetchAllDeptsForTree,
-} from "./_lib/actions";
+import { searchPages, searchTotal, fetchAllDeptsForTree } from "./_lib/actions";
 import Search from "./_components/search";
 import { PageParams } from "./_lib/type";
 import PaginationSysDept from "./_components/pagination";
@@ -12,14 +8,11 @@ import { BuildingOfficeIcon } from "@heroicons/react/24/outline";
 import Breadcrumbs from "@/components/custome_ui/breadcrumbs";
 import { hasPermission } from "@/lib/permission";
 import { HasPermi } from "@/components/has-permi";
-import { auth } from "@/auth";
 
 export default async function SysDeptPage(props: {
   searchParams: Promise<PageParams>;
 }) {
   await hasPermission("system:sys_dept:list");
-  const session = await auth();
-
   const queryParams = await props.searchParams;
   queryParams.pageNum = queryParams.pageNum ? Number(queryParams.pageNum) : 1;
   queryParams.pageSize = queryParams.pageSize
@@ -44,7 +37,7 @@ export default async function SysDeptPage(props: {
           />
         </div>
         <div className="mr-5">
-          <HasPermi session={session} permission="system:sys_dept:add">
+          <HasPermi permission="system:sys_dept:add">
             <CreateDeptButton />
           </HasPermi>
         </div>
@@ -57,7 +50,7 @@ export default async function SysDeptPage(props: {
 
       {/* Table */}
       <div className="mt-6">
-        <DataTable session={session} data={data} />
+        <DataTable data={data} />
       </div>
 
       {/* Pagination */}

@@ -1,17 +1,18 @@
-"use client";
+import { auth } from "@/auth";
+import { DashboardShell } from "./dashboard-shell";
 
-import SideNav from "@/app/ui/dashboard/sidenav";
-import { SidebarProvider, Sidebar, SidebarInset } from "@/components/ui/sidebar";
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const session = await auth();
+  const roles = session?.user?.roles ?? [];
+  const permissions = session?.user?.permissions ?? [];
 
-export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <SidebarProvider>
-      <Sidebar collapsible="icon" className="bg-gray-50">
-        <SideNav />
-      </Sidebar>
-      <SidebarInset>
-        <div className="flex-1 px-6 py-3">{children}</div>
-      </SidebarInset>
-    </SidebarProvider>
+    <DashboardShell roles={roles} permissions={permissions}>
+      {children}
+    </DashboardShell>
   );
 }
