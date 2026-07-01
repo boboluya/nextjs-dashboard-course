@@ -187,6 +187,7 @@ export type SysDictItem = {
   dictValue?: string;
   dictLabel?: string;
   sorting?: number;
+  color?: string | null;
   createBy?: number;
   updateBy?: number;
   delFlag?: string | null;

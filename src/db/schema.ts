@@ -166,6 +166,8 @@ export const sys_dictItemTable = pgTable("sys_dict_item", {
   dict_label: varchar({ length: 50 }).notNull(),
   /** sorting */
   sorting: integer().notNull(),
+  /** color */
+  color: varchar({ length: 50 }),
   /** create_by */
   create_by: integer().notNull(),
   /** update_by */

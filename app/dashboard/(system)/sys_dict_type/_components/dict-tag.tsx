@@ -12,7 +12,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 export function DictTag({
   dictType,
   dictValue,
-  color,
+  color: fallbackColor,
 }: {
   dictType: string;
   dictValue: string;
@@ -22,10 +22,11 @@ export function DictTag({
     `/api/dict-items?dictType=${dictType}`,
     fetcher,
   );
-  if (!dictValue) return <Tag text="" color={color} />;
+  if (!dictValue) return <Tag text="" color={fallbackColor} />;
 
   const matched = items?.find((item) => item.dictValue === dictValue);
   const label = matched?.dictLabel || dictValue;
+  const color = (matched?.color as TagProps["color"]) ?? fallbackColor;
 
   return <Tag text={label} color={color} />;
 }
