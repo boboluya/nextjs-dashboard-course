@@ -93,6 +93,7 @@ export async function insertDictItem(dictItem: SysDictItem) {
       dict_name: dictItem.dictName ?? "",
       dict_value: dictItem.dictValue ?? "",
       dict_label: dictItem.dictLabel ?? "",
+      color: dictItem.color ?? null,
       sorting: dictItem.sorting ?? 0,
       create_by: dictItem.createBy ?? 1,
       create_time: dictItem.createTime ?? new Date(),
@@ -111,6 +112,7 @@ export async function updateDictItem(dictItem: SysDictItem) {
   if (dictItem.dictName !== undefined) updateData.dict_name = dictItem.dictName;
   if (dictItem.dictValue !== undefined) updateData.dict_value = dictItem.dictValue;
   if (dictItem.dictLabel !== undefined) updateData.dict_label = dictItem.dictLabel;
+  if (dictItem.color !== undefined) updateData.color = dictItem.color;
   if (dictItem.sorting !== undefined) updateData.sorting = dictItem.sorting;
 
   await db

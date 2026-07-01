@@ -13,6 +13,7 @@ import { EditDictItemButton, DeleteDictItemButton } from "./action-buttons";
 import { Tag } from "@/components/custome_ui/tag";
 import { ListBulletIcon, TagIcon } from "@heroicons/react/24/outline";
 import { HasPermi } from "@/components/has-permi";
+import type { DictItemColor } from "../_lib/colors";
 
 export function DataTable({
   data,
@@ -85,7 +86,7 @@ export function DataTable({
                   <TableCell>
                     <div className="flex items-center gap-1.5">
                       <TagIcon className="h-4 w-4 text-gray-400" />
-                      <Tag text={row.dictValue || "---"} color="indigo" />
+                      <Tag text={row.dictValue || "---"} color={(row.color as DictItemColor) ?? "indigo"} />
                     </div>
                   </TableCell>
                   <TableCell className="text-gray-600">
@@ -138,7 +139,7 @@ export function DataTable({
               <div className="mt-4 space-y-2 border-t border-gray-100 pt-3">
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <TagIcon className="h-4 w-4 text-gray-400" />
-                  <Tag text={row.dictValue || "---"} color="indigo" />
+                  <Tag text={row.dictValue || "---"} color={(row.color as DictItemColor) ?? "indigo"} />
                 </div>
                 <p className="text-sm text-gray-500">Name: {row.dictName}</p>
               </div>

@@ -15,6 +15,7 @@ import { error } from "console";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { hasApiPermission } from "@/lib/permission";
+import { dictItemColors } from "./colors";
 
 const FormSchema = z.object({
   id: z.number(),
@@ -25,6 +26,7 @@ const FormSchema = z.object({
     .max(50, { message: "Must be 50 characters or less." }),
   dictLabel: z.string().min(1, { message: "Dict label is required." })
     .max(50, { message: "Must be 50 characters or less." }),
+  color: z.enum(dictItemColors).nullable(),
   sorting: z.coerce.number().min(0, { message: "Sorting must be >= 0." }),
 });
 
@@ -34,6 +36,7 @@ export type State = {
     dictName?: string[];
     dictValue?: string[];
     dictLabel?: string[];
+    color?: string[];
     sorting?: string[];
   };
   message?: string | null;
@@ -45,6 +48,7 @@ export type EditState = {
     dictName?: string[];
     dictValue?: string[];
     dictLabel?: string[];
+    color?: string[];
     sorting?: string[];
   };
   message?: string | null;
@@ -69,6 +73,7 @@ export async function createSysDictItem(prevState: State, formData: FormData) {
     dictName: formData.get("dictName"),
     dictValue: formData.get("dictValue"),
     dictLabel: formData.get("dictLabel"),
+    color: formData.get("color") || null,
     sorting: formData.get("sorting"),
   });
   if (!parsedData.success) {
@@ -83,6 +88,7 @@ export async function createSysDictItem(prevState: State, formData: FormData) {
       dictName: parsedData.data.dictName,
       dictValue: parsedData.data.dictValue,
       dictLabel: parsedData.data.dictLabel,
+      color: parsedData.data.color,
       sorting: parsedData.data.sorting,
       createTime: new Date(),
     };
@@ -120,6 +126,7 @@ export async function updateSysDictItem(
     dictName: formData.get("dictName"),
     dictValue: formData.get("dictValue"),
     dictLabel: formData.get("dictLabel"),
+    color: formData.get("color") || null,
     sorting: formData.get("sorting"),
   });
   if (!parsedData.success) {
@@ -135,6 +142,7 @@ export async function updateSysDictItem(
       dictName: parsedData.data.dictName,
       dictValue: parsedData.data.dictValue,
       dictLabel: parsedData.data.dictLabel,
+      color: parsedData.data.color,
       sorting: parsedData.data.sorting,
     };
     await updateDictItem(dictItem);

@@ -13,6 +13,8 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { SysDictType } from "@/app/lib/definitions";
+import { Tag } from "@/components/custome_ui/tag";
+import { dictItemColors } from "../_lib/colors";
 
 export function CreateForm({
   dictTypes,
@@ -150,6 +152,43 @@ export function CreateForm({
             <div id="dictName-error" aria-live="polite" aria-atomic="true">
               {state.errors?.dictName &&
                 state.errors.dictName.map((error: string) => (
+                  <p className="mt-1 text-sm text-red-500 flex items-center gap-1" key={error}>
+                    <span className="inline-block w-1 h-1 bg-red-500 rounded-full" />
+                    {error}
+                  </p>
+                ))}
+            </div>
+          </div>
+
+          {/* Color Field */}
+          <div className="space-y-2">
+            <label htmlFor="color-field" className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+              <TagIcon className="h-4 w-4 text-gray-500" />
+              Color
+            </label>
+            <div className="relative">
+              <select
+                id="color-field"
+                name="color"
+                defaultValue="gray"
+                className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm pl-10 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-200"
+              >
+                {dictItemColors.map((color) => (
+                  <option key={color} value={color}>
+                    {color}
+                  </option>
+                ))}
+              </select>
+              <TagIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 pointer-events-none" />
+            </div>
+            <div className="flex flex-wrap gap-2 pt-1">
+              {dictItemColors.map((color) => (
+                <Tag key={color} text={color} color={color} />
+              ))}
+            </div>
+            <div id="color-error" aria-live="polite" aria-atomic="true">
+              {state.errors?.color &&
+                state.errors.color.map((error: string) => (
                   <p className="mt-1 text-sm text-red-500 flex items-center gap-1" key={error}>
                     <span className="inline-block w-1 h-1 bg-red-500 rounded-full" />
                     {error}
